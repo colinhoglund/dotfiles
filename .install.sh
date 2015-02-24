@@ -5,4 +5,4 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 brew doctor
 brew update
 brew install bash-completion ssh-copy-id wget nmap coreutils vim gnu-sed
-sudo gem install i2cssh
+sudo gem install i2cssh puppet-lint
