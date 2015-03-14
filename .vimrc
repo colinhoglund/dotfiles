@@ -55,7 +55,15 @@ if has("autocmd")
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
   " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin on
+  filetype plugin indent on
+
+  " Set default tabstop.
+  set tabstop=2
+  set shiftwidth=2
+  set expandtab
+
+  " Make pasting work properly.
+  set paste
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
