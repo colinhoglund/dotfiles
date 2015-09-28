@@ -5,7 +5,7 @@ Clone repo using the following commands:
 ```
 cd ~/
 git init .
-git remote add origin git@github.com:colinhoglund/dotfiles.git
+git remote add origin https://github.com/colinhoglund/dotfiles.git
 git fetch
 git checkout -t origin/master
 ```
