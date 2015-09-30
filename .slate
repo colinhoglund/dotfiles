@@ -43,21 +43,23 @@ alias bottomright corner bottom-right resize:screenSizeX/2;screenSizeY/2
 #alias bottomrightthird corner bottom-right resize:screenSizeX/3;screenSizeY/2
 #alias toprightthird corner top-right resize:screenSizeX/3;screenSizeY/2
 
-bind k:${hyper} ${lefthalf}
-bind ;:${hyper} ${righthalf}
-bind .:${hyper} ${bottomhalf}
-bind o:${hyper} ${tophalf}
-bind i:${hyper} ${topleft}
-bind p:${hyper} ${topright}
-bind ,:${hyper} ${bottomleft}
-bind /:${hyper} ${bottomright}
-bind l:${hyper} ${full}
+bind j:${hyper} ${lefthalf}
+bind l:${hyper} ${righthalf}
+bind ,:${hyper} ${bottomhalf}
+bind i:${hyper} ${tophalf}
+bind u:${hyper} ${topleft}
+bind o:${hyper} ${topright}
+bind m:${hyper} ${bottomleft}
+bind .:${hyper} ${bottomright}
+bind k:${hyper} ${full}
+
+bind n:${hyper} throw next
 
 # 'nudge' (move)  a window
-bind right:${hyper} nudge +5% +0
-bind left:${hyper}  nudge -5% +0
-bind up:${hyper}    nudge +0   -5%
-bind down:${hyper}  nudge +0   +5%
+#bind right:${hyper} nudge +5% +0
+#bind left:${hyper}  nudge -5% +0
+#bind up:${hyper}    nudge +0   -5%
+#bind down:${hyper}  nudge +0   +5%
 
 # Resize
 bind right:shift;${hyper}       resize +5% +0
