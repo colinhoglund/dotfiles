@@ -6,3 +6,4 @@ brew doctor
 brew update
 brew install bash-completion ssh-copy-id wget nmap coreutils vim gnu-sed
 sudo gem install i2cssh
+cd /Applications && curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz
