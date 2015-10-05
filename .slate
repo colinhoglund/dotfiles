@@ -1,4 +1,4 @@
-alias hyper shift;cmd
+alias hyper shift;alt
 
 config defaultToCurrentScreen true
 config keyboardLayout "qwerty"
