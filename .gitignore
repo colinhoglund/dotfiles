@@ -1,8 +1,4 @@
-.CFUserTextEncoding
-.DS_Store
-.bash_sessions/
-.gitconfig
-.viminfo
+# ignore personal folders
 Desktop/
 Documents/
 Downloads/
@@ -11,3 +7,17 @@ Movies/
 Music/
 Pictures/
 Public/
+
+# ignore certain dotfiles
+.CFUserTextEncoding
+.DS_Store
+.Trash/
+.bash_history
+.bash_sessions/
+.gitconfig
+.lesshst
+.ssh/
+.viminfo
+
+# ignore log files
+*.log
