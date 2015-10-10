@@ -6,7 +6,7 @@ Install Xcode command line tools:
 xcode-select --install
 ```
 
-Clone repo using the following commands:
+Clone repo into home directory:
 ```
 cd ~/
 git init .
