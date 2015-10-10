@@ -24,3 +24,15 @@ gem list | grep i2cssh &> /dev/null\
 [ -d /Applications/Slate.app ]\
   && echo "${warn_text}Slate already installed"\
   || $(curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
+
+# install chrome
+if [ -d /Applications/Google\ Chrome.app/ ]; then
+  echo "${warn_text}Google Chrome already installed"
+else
+  cd /tmp
+  wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
+  open -W /tmp/googlechrome.dmg
+  sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
+  umount /Volumes/Google\ Chrome/
+  rm -f /tmp/googlechrome.dmg
+fi
