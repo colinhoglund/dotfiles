@@ -20,4 +20,10 @@ Run .install script:
 ./.install.sh
 ```
 
+Configure git:
+```
+git config --global user.name "First Last"
+git config --global user.email email@address
+```
+
 [Enable assitive devices](https://support.apple.com/en-us/HT202866) for Slate
