@@ -20,5 +20,4 @@ Run .install script:
 ./.install.sh
 ```
 
-Enable assitive devices for Slate:
-https://support.apple.com/en-us/HT202866
+[Enable assitive devices](https://support.apple.com/en-us/HT202866) for Slate
