@@ -846,7 +846,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/hoglund</string>
+			<string>~/</string>
 		</dict>
 		<dict>
 			<key>ASCII Anti Aliased</key>
@@ -1571,7 +1571,7 @@
 			<key>Window Type</key>
 			<integer>0</integer>
 			<key>Working Directory</key>
-			<string>/Users/hoglund</string>
+			<string>~/</string>
 		</dict>
 	</array>
 	<key>NoSyncTimeOfLastPromo</key>
@@ -1624,7 +1624,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/hoglund/iterm_prefs</string>
+	<string>~/iterm_prefs</string>
 	<key>PromptOnClose</key>
 	<true/>
 	<key>PromptOnQuit</key>
