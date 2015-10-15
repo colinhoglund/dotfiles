@@ -21,6 +21,7 @@ liquidprompt/
 .lesshst
 .liquidpromptrc
 .ssh/
+.subversion/
 .viminfo
 
 # ignore log files
