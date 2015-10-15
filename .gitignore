@@ -8,15 +8,18 @@ Movies/
 Music/
 Pictures/
 Public/
+liquidprompt/
 
 # ignore certain dotfiles
 .CFUserTextEncoding
 .DS_Store
 .Trash/
+.bashrc
 .bash_history
 .bash_sessions/
 .gitconfig
 .lesshst
+.liquidpromptrc
 .ssh/
 .viminfo
 
