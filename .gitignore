@@ -9,6 +9,8 @@ Music/
 Pictures/
 Public/
 liquidprompt/
+code/
+env/
 
 # ignore certain dotfiles
 .CFUserTextEncoding
@@ -23,6 +25,7 @@ liquidprompt/
 .ssh/
 .subversion/
 .viminfo
+.atom
 
 # ignore log files
 *.log
