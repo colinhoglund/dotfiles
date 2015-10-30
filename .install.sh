@@ -13,7 +13,7 @@ which brew &> /dev/null\
   || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew doctor
 brew update
-brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id tmux vim wget 
+brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id tmux vim wget watch
 
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\
