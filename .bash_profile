@@ -21,6 +21,7 @@ alias .5='cd ../../../../../'
 alias .6='cd ../../../../../../'
 alias cssh='i2cssh'
 alias sed='gsed'
+alias glog='git log --pretty=oneline --graph'
 
 ## activate bash completion ##
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
