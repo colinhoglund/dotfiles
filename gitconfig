@@ -1,10 +1,10 @@
 [push]
 	default = simple
 [alias]
-	st = status
-	df = diff
-	ci = commit
-	co = checkout
-	br = branch
+    st = status
+    df = diff
+    ci = commit
+    co = checkout
+    br = branch
     pl = pull
     ps = push
