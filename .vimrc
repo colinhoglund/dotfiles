@@ -11,9 +11,10 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Custom vim bundles
-Plugin 'scrooloose/nerdtree'
+Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 
 " The following are examples of different formats supported.
@@ -71,3 +72,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" airline settings
+set laststatus=2
