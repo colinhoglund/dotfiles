@@ -23,6 +23,7 @@ brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id tmux vim wge
 [ -d ~/.vim/bundle/Vundle.vim/ ]\
   && warn_installed Vundle\
   || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall &> /dev/null
 
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\
