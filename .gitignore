@@ -11,6 +11,7 @@ Public/
 liquidprompt/
 code/
 env/
+repos/
 
 # ignore certain dotfiles
 .CFUserTextEncoding
@@ -24,6 +25,7 @@ env/
 .liquidpromptrc
 .ssh/
 .subversion/
+.vim/
 .viminfo
 .atom
 
