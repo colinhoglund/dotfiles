@@ -11,6 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Custom vim bundles
 Plugin 'bling/vim-airline'
+Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/nerdtree'
@@ -71,3 +72,8 @@ nnoremap k gk
 
 " highlight last inserted text
 nnoremap gV `[v`]
+
+" CtrlP settings
+let g:ctrlp_match_window = 'bottom,order:ttb'
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
