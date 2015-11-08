@@ -13,6 +13,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Custom vim bundles
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/syntastic'
 
 " The following are examples of different formats supported.
