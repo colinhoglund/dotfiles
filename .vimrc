@@ -22,14 +22,17 @@ filetype plugin indent on    " required
 
 """ Custom tweaks
 syntax on                      "syntax highlighting
-colorscheme molokai
+colorscheme molokai            "change vim color scheme
 set backspace=indent,eol,start "allow backspacing over everything in insert mode
+set cursorline                 "highlight current line
 set history=50                 "keep 50 lines of command line history
 set hlsearch                   "highlight matches when searching
 set incsearch                  "do incremental searching
+set number                     "show line numbers
 set paste                      "paste functions as expected
 set ruler                      "show the cursor position all the time
 set showcmd                    "display incomplete commands
+set wildmenu                   "visual autocomplete for command menu
 
 " tabs == 4 spaces
 set tabstop=4
@@ -54,3 +57,10 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+"folding
+set foldenable        " enable folding
+set foldlevelstart=10 " open most folds by default
+set foldnestmax=10    " 10 nested fold max
+set foldmethod=indent " fold based on indent level
+nnoremap <space> za
