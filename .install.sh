@@ -27,7 +27,9 @@ vim +PluginInstall +qall &> /dev/null
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
-wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
+[ -f ~/.vim/colors/molokai.vim ]\
+  && warn_installed 'vim colorscheme: molokai'\
+  || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
 
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\
