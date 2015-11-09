@@ -23,7 +23,7 @@ brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id the_silver_s
 [ -d ~/.vim/bundle/Vundle.vim/ ]\
   && warn_installed Vundle\
   || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall &> /dev/null
+vim +PluginInstall +qall
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
