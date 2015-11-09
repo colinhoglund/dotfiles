@@ -14,6 +14,7 @@ Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 
@@ -30,7 +31,6 @@ set history=50                 "keep 50 lines of command line history
 set hlsearch                   "highlight matches when searching
 set incsearch                  "do incremental searching
 set number                     "show line numbers
-set paste                      "paste functions as expected
 set ruler                      "show the cursor position all the time
 set showcmd                    "display incomplete commands
 set wildmenu                   "visual autocomplete for command menu
