@@ -31,6 +31,16 @@ mkdir -p ~/.vim/colors
   && warn_installed 'vim colorscheme: molokai'\
   || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
 
+# install powerline fonts
+ls ~/Library/Fonts/ | grep -i 'for powerline' &> /dev/null
+if [ $? -eq 0 ]; then
+  warn_installed 'powerline fonts'
+else
+  git clone https://github.com/powerline/fonts.git /tmp/pl-fonts
+  /tmp/pl-fonts/install.sh
+  rm -rf /tmp/pl-fonts
+fi
+
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\
   && warn_installed i2cssh\
