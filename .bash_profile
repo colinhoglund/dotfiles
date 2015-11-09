@@ -22,7 +22,11 @@ alias .6='cd ../../../../../../'
 alias cssh='i2cssh'
 alias sed='gsed'
 alias glog='git log --pretty=oneline --graph'
+
+# tmux aliases
 alias itmux='tmux -CC'
+alias tkill='tmux kill-session'
+alias tlist='tmux list-sessions'
 
 ## activate bash completion ##
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
