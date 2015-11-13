@@ -74,3 +74,6 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " vim-fugitive command mappings
 command GB Gblame
 command GD Gdiff
+
+" syntastic settings
+let g:syntastic_check_on_open = 1
