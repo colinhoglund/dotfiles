@@ -1,22 +1,10 @@
 # ignore personal folders
-Applications/
-Desktop/
-Documents/
-Downloads/
-Library/
-Movies/
-Music/
-Pictures/
-Public/
 liquidprompt/
 code/
 env/
 repos/
 
 # ignore certain dotfiles
-.CFUserTextEncoding
-.DS_Store
-.Trash/
 .bashrc
 .bash_history
 .bash_sessions/
