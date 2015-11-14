@@ -19,12 +19,6 @@ brew update
 brew upgrade --all
 brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id the_silver_searcher tmux vim wget watch
 
-# install Vundle
-[ -d ~/.vim/bundle/Vundle.vim/ ]\
-  && warn_installed Vundle\
-  || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-
 # install molokai color scheme
 mkdir -p ~/.vim/colors
 [ -f ~/.vim/colors/molokai.vim ]\
@@ -40,6 +34,12 @@ else
   /tmp/pl-fonts/install.sh
   rm -rf /tmp/pl-fonts
 fi
+
+# install Vundle
+[ -d ~/.vim/bundle/Vundle.vim/ ]\
+  && warn_installed Vundle\
+  || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+vim +PluginInstall +qall
 
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\
