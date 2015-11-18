@@ -11,6 +11,7 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Custom vim bundles
 Plugin 'bling/vim-airline'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
@@ -76,4 +77,7 @@ command GB Gblame
 command GD Gdiff
 
 " syntastic settings
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
