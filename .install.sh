@@ -19,6 +19,10 @@ brew update
 brew upgrade --all
 brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id the_silver_searcher tmux vim wget watch
 
+# setup python virtualenv and install dependencies
+virtualenv ~/env
+source ~/env/bin/activate && pip install pylint
+
 # install molokai color scheme
 mkdir -p ~/.vim/colors
 [ -f ~/.vim/colors/molokai.vim ]\
