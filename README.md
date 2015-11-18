@@ -31,3 +31,9 @@ Additional Steps:
 - [Install](https://www.iterm2.com/downloads.html) iTerm2
 - Load iTerm2 preferences:
   - Preferences -> General -> Load preferences from a custom folder or URL -> enter `~/`
+
+Optional Steps:
+- Show parent directory for liquidprompt Python virtualenv
+```
+LP_VENV=" [${LP_COLOR_VIRTUALENV}$(echo ${VIRTUAL_ENV}|awk -F/ '{OFS = "/"}{print $(NF-1),$(NF)}')${NO_COL}]"
+```
