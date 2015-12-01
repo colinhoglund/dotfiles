@@ -33,3 +33,6 @@ alias tlist='tmux list-sessions'
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
     source $(brew --prefix)/etc/bash_completion
 fi
+
+# activate python virtualenv
+source ~/env/bin/activate
