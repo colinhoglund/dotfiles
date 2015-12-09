@@ -17,9 +17,10 @@ which brew &> /dev/null\
 brew doctor
 brew update
 brew upgrade --all
-brew install bash-completion coreutils git gnu-sed nmap ssh-copy-id the_silver_searcher tmux vim wget watch
+brew install bash-completion coreutils git gnu-sed nmap python ssh-copy-id the_silver_searcher tmux vim wget watch
 
 # setup python virtualenv and install dependencies
+pip install virtualenv
 virtualenv ~/env
 source ~/env/bin/activate && pip install pylint
 
