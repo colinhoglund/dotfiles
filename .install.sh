@@ -21,7 +21,7 @@ brew install bash-completion coreutils git gnu-sed nmap python ssh-copy-id the_s
 
 # setup python virtualenv and install dependencies
 if [ -d ~/env ]; then
-  source ~/env/bin/activate && pip install ipython pylint
+  source ~/env/bin/activate && pip install --upgrade ipython pylint
 else
   pip install virtualenv
   virtualenv ~/env
