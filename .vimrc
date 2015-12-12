@@ -12,6 +12,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Custom vim bundles
 Plugin 'bling/vim-airline'
 Plugin 'davidhalter/jedi-vim'
+Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
