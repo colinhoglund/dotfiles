@@ -1,5 +1,25 @@
 #!/bin/bash
 
+brew_pkgs='
+  bash-completion
+  coreutils
+  git
+  gnu-sed
+  nmap
+  python
+  ssh-copy-id
+  the_silver_searcher
+  tmux
+  vim
+  watch
+  wget
+'
+
+python_pkgs='
+  ipython
+  pylint
+'
+
 function warn_installed {
   warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
   echo "${warn_text} $1 already exists"
@@ -17,11 +37,11 @@ which brew &> /dev/null\
 brew doctor
 brew update
 brew upgrade --all
-brew install bash-completion coreutils git gnu-sed nmap python ssh-copy-id the_silver_searcher tmux vim wget watch
+brew install $brew_pkgs
 
 # setup python virtualenv and install dependencies
 if [ -d ~/env ]; then
-  source ~/env/bin/activate && pip install --upgrade ipython pylint
+  source ~/env/bin/activate && pip install --upgrade $python_pkgs
 else
   pip install virtualenv
   virtualenv ~/env
@@ -74,7 +94,7 @@ if [ -d /Applications/Google\ Chrome.app/ ]; then
 else
   cd /tmp
   wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
-  open -W /tmp/googlechrome.dmg
+  hdiutil attach -nobrowse /tmp/googlechrome.dmg
   sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
   umount /Volumes/Google\ Chrome/
   rm -f /tmp/googlechrome.dmg
