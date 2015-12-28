@@ -38,7 +38,7 @@ set ruler                      "show the cursor position all the time
 set showcmd                    "display incomplete commands
 set wildmenu                   "visual autocomplete for command menu
 
-" tabs == 4 spaces
+" set tab spacing
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
