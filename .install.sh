@@ -90,7 +90,7 @@ fi
 
 # install chrome
 if [ -d /Applications/Google\ Chrome.app/ ]; then
-  warn_installed Google Chrome
+  warn_installed 'Google Chrome'
 else
   cd /tmp
   wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
