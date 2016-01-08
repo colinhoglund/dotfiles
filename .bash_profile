@@ -23,6 +23,7 @@ alias .6='cd ../../../../../../'
 alias cssh='i2cssh'
 alias sed='gsed'
 alias glog='git log --pretty=oneline --graph'
+alias activate='source ./env/bin/activate'
 
 # tmux aliases
 alias itmux='tmux -CC'
