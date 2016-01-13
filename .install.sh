@@ -1,5 +1,9 @@
 #!/bin/bash
 
+######## Variables ########
+
+os_x_version=`sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2`
+
 brew_pkgs='
   bash-completion
   Caskroom/cask/dockertoolbox
@@ -21,6 +25,8 @@ python_pkgs='
   pylint
 '
 
+######## Functions ########
+
 # warning for completed tasks
 warn_installed() {
   warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
@@ -37,14 +43,16 @@ config_global_git() {
   fi
 }
 
-# setup git configuration
-config_global_git user.name
-config_global_git user.email
+######## Tasks ########
 
 # copy git configuration
 [ -f ~/.gitconfig ]\
   && warn_installed ~/.gitconfig\
   || cp gitconfig .gitconfig
+
+# setup git globals
+config_global_git user.name
+config_global_git user.email
 
 # install homebrew and packages
 which brew &> /dev/null\
@@ -104,10 +112,17 @@ if [ -d /Applications/Slate.app ]; then
   warn_installed Slate
 else
   $(curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
-  # enable assistive devices in el capitan
+  # enable assistive devices
   slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
-  slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
-  sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
+  case "$os_x_version" in
+    10.11)
+      slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
+      ;;
+    10.10)
+      slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL);"
+      ;;
+  esac
+  [ -n "$slate_sql" ] && sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
 fi
 
 # install iTerm2
