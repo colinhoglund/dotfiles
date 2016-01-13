@@ -102,10 +102,11 @@ fi
 if [ -d /Applications/Slate.app ]; then
   warn_installed Slate
 else
-  $(curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
+  $(curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
   # enable assistive devices in el capitan
   slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
-  sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
+  slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
+  sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
 fi
 
 # install iTerm2
