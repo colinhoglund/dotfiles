@@ -1,8 +1,13 @@
 *.log
+*.retry
+.499167.padl
 .CFUserTextEncoding
 .DS_Store
+.MacOSX
 .Trash
+.ansible
 .atom
+.aws
 .bash_history
 .bash_sessions
 .bashrc
@@ -10,8 +15,12 @@
 .cups
 .docker
 .gitconfig
+.irssi
+.k5login
 .lesshst
 .liquidpromptrc
+.mysql_history
+.oracle_jre_usage
 .pylint.d
 .sqlite_history
 .ssh
@@ -20,8 +29,10 @@
 .vagrant.d
 .vim
 .viminfo
+.vnc
 .wget-hsts
 Applications
+Box Sync
 Desktop
 Documents
 Downloads
@@ -30,14 +41,12 @@ Movies
 Music
 Pictures
 Public
+PycharmProjects
 Vagrantfile
 VirtualBox VMs
 code
 env
-ftp.retry
-jenkins.retry
+envs
 liquidprompt
 repos
-ssh.retry
-sshd.retry
 vagrant.yml

@@ -2,6 +2,7 @@
 
 brew_pkgs='
   bash-completion
+  Caskroom/cask/dockertoolbox
   coreutils
   git
   gnu-sed
