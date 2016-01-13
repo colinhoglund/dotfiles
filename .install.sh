@@ -2,7 +2,7 @@
 
 ######## Variables ########
 
-os_x_version=`sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2`
+os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
 
 brew_pkgs='
   bash-completion
@@ -132,7 +132,7 @@ else
   iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
               | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
               | head -1)
-  iterm_zipfile=`echo $iterm_url | rev | cut -d/ -f1 | rev`
+  iterm_zipfile=$(echo $iterm_url | rev | cut -d/ -f1 | rev)
 
   cd /tmp
   wget $iterm_url
