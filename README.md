@@ -21,7 +21,7 @@ Run .install script:
 ```
 
 Optional Steps:
-- Load iTerm2 preferences:
+- Load custom iTerm2 preferences:
   - Preferences -> General -> Load preferences from a custom folder or URL -> enter `~/`
 - Show parent directory for liquidprompt Python virtualenv
 ```
