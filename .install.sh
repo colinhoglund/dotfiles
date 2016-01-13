@@ -99,9 +99,29 @@ else
 fi
 
 # install slate window manager
-[ -d /Applications/Slate.app ]\
-  && warn_installed Slate\
-  || $(curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
+if [ -d /Applications/Slate.app ]; then
+  warn_installed Slate
+else
+  $(curl http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
+  # enable assistive devices in el capitan
+  slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
+  sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
+fi
+
+# install iTerm2
+if [ -d /Applications/iTerm.app/ ]; then
+  warn_installed iTerm
+else
+  iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
+              | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
+              | head -1)
+  iterm_zipfile=`echo $iterm_url | rev | cut -d/ -f1 | rev`
+
+  cd /tmp
+  wget $iterm_url
+  unzip -qd /Applications/ $iterm_zipfile
+  rm -f $iterm_zipfile
+fi
 
 # install chrome
 if [ -d /Applications/Google\ Chrome.app/ ]; then
