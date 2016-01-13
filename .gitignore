@@ -1,4 +1,5 @@
 *.log
+.ipython*
 *.retry
 .499167.padl
 .CFUserTextEncoding
