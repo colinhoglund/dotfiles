@@ -20,12 +20,6 @@ Run .install script:
 ./.install.sh
 ```
 
-Configure git:
-```
-git config --global user.name "First Last"
-git config --global user.email email@address
-```
-
 Additional Steps:
 - [Enable assitive devices](https://support.apple.com/en-us/HT202866) for Slate
 - [Install](https://www.iterm2.com/downloads.html) iTerm2

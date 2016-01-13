@@ -20,10 +20,25 @@ python_pkgs='
   pylint
 '
 
-function warn_installed {
+# warning for completed tasks
+warn_installed() {
   warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
   echo "${warn_text} $1 already exists"
 }
+
+# sets up global git config attribute
+config_global_git() {
+  git config --global $1 &> /dev/null
+  if [ "$?" -ne 0 ]; then
+    echo -n "Enter a git config $1: "
+    read input
+    git config --global $1 "$input"
+  fi
+}
+
+# setup git configuration
+config_global_git user.name
+config_global_git user.email
 
 # copy git configuration
 [ -f ~/.gitconfig ]\
