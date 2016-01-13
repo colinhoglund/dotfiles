@@ -104,6 +104,10 @@ if [ -d ~/liquidprompt/ ]; then
 else
   git clone https://github.com/nojhan/liquidprompt.git ~/liquidprompt
   echo '[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt' >> ~/.bashrc
+
+  # show parent dir for Python virtualenv
+  gsed -i '/LP_VENV="/s/^.*$/        LP_VENV=" [${LP_COLOR_VIRTUALENV}$(echo ${VIRTUAL_ENV}| rev | cut -d\/ -f1,2 | rev)]"/' liquidprompt/liquidprompt
+
   cp ~/liquidprompt/liquidpromptrc-dist ~/.liquidpromptrc
 fi
 
