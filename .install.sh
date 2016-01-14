@@ -136,7 +136,7 @@ else
   iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
               | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
               | head -1)
-  iterm_zipfile=$(echo $iterm_url | rev | cut -d/ -f1 | rev)
+  iterm_zipfile=$(basename $iterm_url)
 
   cd /tmp
   wget $iterm_url
