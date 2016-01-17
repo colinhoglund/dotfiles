@@ -1,5 +1,6 @@
 OS X dotfiles
 ========
+**Please note:** These dotfiles contain many tools specific to Python development
 
 Install Xcode command line tools:
 ```
