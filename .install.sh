@@ -20,7 +20,9 @@ brew_pkgs='
   wget
 '
 
+# colorama 0.3.6 breaks jedi-vim for some reason...
 python_pkgs='
+  colorama==0.3.5
   jupyter
   pylint
 '
