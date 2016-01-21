@@ -21,7 +21,7 @@ brew_pkgs='
 '
 
 python_pkgs='
-  ipython
+  jupyter
   pylint
 '
 
