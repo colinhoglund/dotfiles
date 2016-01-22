@@ -6,7 +6,6 @@ os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
 
 brew_pkgs='
   bash-completion
-  Caskroom/cask/dockertoolbox
   coreutils
   git
   gnu-sed
