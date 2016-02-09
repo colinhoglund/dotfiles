@@ -34,6 +34,7 @@
 .vagrant.d
 .vim
 .viminfo
+.virtualenvs
 .vnc
 .wget-hsts
 Applications
