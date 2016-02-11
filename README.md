@@ -16,9 +16,9 @@ git fetch
 git checkout -t origin/master
 ```
 
-Run .install script:
+Deactivate any existing python virtualenvs and run .install.sh script:
 ```
-./.install.sh
+~/.install.sh
 ```
 
 Optional Steps:

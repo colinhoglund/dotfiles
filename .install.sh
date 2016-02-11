@@ -20,11 +20,15 @@ brew_pkgs='
 '
 
 # colorama 0.3.6 breaks jedi-vim for some reason...
-python_pkgs='
+global_python_pkgs='
   pip
   colorama==0.3.5
-  jupyter
   pylint
+  virtualenvwrapper
+'
+
+venv_python_pkgs='
+  jupyter
 '
 
 ######## Functions ########
@@ -65,13 +69,25 @@ brew update
 brew upgrade --all
 brew install $brew_pkgs
 
+# temporarily change PATH and deactivate virtualenv
+# to update brew and setup virtualenvwrapper
+TMP_PATH=$PATH
+PATH=/usr/local/bin:$PATH
+[ -n "$VIRTUAL_ENV" ] && source ${VIRTUAL_ENV}/bin/activate && deactivate
+
 # setup python virtualenv and install dependencies
-if [ -d ~/env ]; then
-  source ~/env/bin/activate && pip install --upgrade $python_pkgs
-else
-  pip install virtualenv
-  virtualenv ~/env
+pip install --upgrade $global_python_pkgs
+WORKON_HOME=$HOME/.virtualenvs
+PROJECT_HOME=$HOME/code
+source /usr/local/bin/virtualenvwrapper.sh
+if [ ! -d "${HOME}/.virtualenvs/default/" ]; then
+  mkvirtualenv default
 fi
+workon default
+pip install --upgrade $venv_python_pkgs
+
+# reset PATH
+PATH=$TMP_PATH
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
@@ -105,11 +121,6 @@ if [ -d ~/liquidprompt/ ]; then
   warn_installed liquidprompt
 else
   git clone https://github.com/nojhan/liquidprompt.git ~/liquidprompt
-  echo '[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt' >> ~/.bashrc
-
-  # show parent dir for Python virtualenv
-  gsed -i '/LP_VENV="/s/^.*$/        LP_VENV=" [${LP_COLOR_VIRTUALENV}$(echo ${VIRTUAL_ENV}| rev | cut -d\/ -f1,2 | rev)]"/' liquidprompt/liquidprompt
-
   cp ~/liquidprompt/liquidpromptrc-dist ~/.liquidpromptrc
 fi
 
