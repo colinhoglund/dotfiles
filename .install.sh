@@ -2,7 +2,7 @@
 
 ######## Checks ########
 
-# ensure virtualenv is deactivated
+# ensure virtualenv is deactivated to avoid issues with brew
 [ -n "$VIRTUAL_ENV" ]\
   && echo 'python virtualenv must be deactivated'\
   && exit 1
