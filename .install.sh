@@ -1,5 +1,12 @@
 #!/bin/bash
 
+######## Checks ########
+
+# ensure virtualenv is deactivated
+[ -n "$VIRTUAL_ENV" ]\
+  && echo 'python virtualenv must be deactivated'\
+  && exit 1
+
 ######## Variables ########
 
 os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
@@ -69,11 +76,9 @@ brew update
 brew upgrade --all
 brew install $brew_pkgs
 
-# temporarily change PATH and deactivate virtualenv
-# to update brew and setup virtualenvwrapper
+# temporarily change PATH to setup virtualenvwrapper
 TMP_PATH=$PATH
 PATH=/usr/local/bin:$PATH
-[ -n "$VIRTUAL_ENV" ] && source ${VIRTUAL_ENV}/bin/activate && deactivate
 
 # setup python virtualenv and install dependencies
 pip install --upgrade $global_python_pkgs
