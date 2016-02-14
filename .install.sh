@@ -46,7 +46,9 @@ global_python_pkgs='
 '
 
 venv_python_pkgs='
+  colorama==0.3.5
   jupyter
+  pylint
 '
 
 ######## Functions ########
