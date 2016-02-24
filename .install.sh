@@ -15,6 +15,7 @@ brew_pkgs='
   ssh-copy-id
   the_silver_searcher
   tmux
+  vim
   watch
   wget
 '
