@@ -8,11 +8,9 @@
 [ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion
 
 ## activate pyenv ##
-if which pyenv > /dev/null; then
-  eval "$(pyenv init -)"
-  pyenv virtualenvwrapper
-  export PROJECT_HOME=~/code
-fi
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 ## env preferences ##
 PATH=$PATH:$HOME/bin

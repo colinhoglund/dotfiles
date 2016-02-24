@@ -1,15 +1,9 @@
 #!/bin/bash
 
-######## Checks ########
-
-# ensure virtualenv is deactivated to avoid issues with brew
-[ -n "$VIRTUAL_ENV" ]\
-  && echo 'python virtualenv must be deactivated'\
-  && exit 1
-
 ######## Variables ########
 
 os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
+python_version='2.7.11'
 
 brew_pkgs='
   bash-completion
@@ -17,12 +11,10 @@ brew_pkgs='
   git
   gnu-sed
   nmap
-  pyenv-virtualenvwrapper
-  python
+  pyenv-virtualenv
   ssh-copy-id
   the_silver_searcher
   tmux
-  vim
   watch
   wget
 '
@@ -41,15 +33,10 @@ git_config='
 # colorama 0.3.6 breaks jedi-vim for some reason...
 global_python_pkgs='
   colorama==0.3.5
+  jupyter
   pip
   pylint
   setuptools
-'
-
-venv_python_pkgs='
-  colorama==0.3.5
-  jupyter
-  pylint
 '
 
 ######## Functions ########
@@ -91,22 +78,23 @@ brew update
 brew upgrade --all
 brew install $brew_pkgs
 
-# install python dependencies
-pip install --upgrade $global_python_pkgs
-
-# setup pyenv and default virtualenv
-if which pyenv > /dev/null; then
-  eval "$(pyenv init -)"
-  pyenv virtualenvwrapper
-  if [ ! -d "${HOME}/.virtualenvs/default/" ]; then
-    mkvirtualenv -p /usr/local/bin/python default
+# setup pyenv and global virtualenv
+if [ -z "$PYENV_VIRTUAL_ENV" ]; then
+  if which pyenv > /dev/null; then
+    eval "$(pyenv init -)"
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    pyenv install $python_version
+    if which pyenv-virtualenv-init > /dev/null; then
+      eval "$(pyenv virtualenv-init -)"
+      pyenv virtualenv $python_version global
+      pyenv global global
+      pyenv activate global
+    fi
   fi
-  workon default
-  pip install --upgrade $venv_python_pkgs
 fi
 
-# create mkproject path
-mkdir ~/code
+# install/upgrade global python packages
+[ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
