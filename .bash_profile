@@ -7,10 +7,12 @@
 ## activate bash completion ##
 [ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion
 
-# activate python virtualenv
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/code
-source /usr/local/bin/virtualenvwrapper.sh
+## activate pyenv ##
+if which pyenv > /dev/null; then
+  eval "$(pyenv init -)"
+  pyenv virtualenvwrapper
+  export PROJECT_HOME=~/code
+fi
 
 ## env preferences ##
 PATH=$PATH:$HOME/bin

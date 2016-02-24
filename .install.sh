@@ -17,6 +17,7 @@ brew_pkgs='
   git
   gnu-sed
   nmap
+  pyenv-virtualenvwrapper
   python
   ssh-copy-id
   the_silver_searcher
@@ -39,10 +40,10 @@ git_config='
 
 # colorama 0.3.6 breaks jedi-vim for some reason...
 global_python_pkgs='
-  pip
   colorama==0.3.5
+  pip
   pylint
-  virtualenvwrapper
+  setuptools
 '
 
 venv_python_pkgs='
@@ -90,23 +91,22 @@ brew update
 brew upgrade --all
 brew install $brew_pkgs
 
-# temporarily change PATH to setup virtualenvwrapper
-TMP_PATH=$PATH
-PATH=/usr/local/bin:$PATH
-
-# setup python virtualenv and install dependencies
+# install python dependencies
 pip install --upgrade $global_python_pkgs
-WORKON_HOME=$HOME/.virtualenvs
-PROJECT_HOME=$HOME/code
-source /usr/local/bin/virtualenvwrapper.sh
-if [ ! -d "${HOME}/.virtualenvs/default/" ]; then
-  mkvirtualenv default
-fi
-workon default
-pip install --upgrade $venv_python_pkgs
 
-# reset PATH
-PATH=$TMP_PATH
+# setup pyenv and default virtualenv
+if which pyenv > /dev/null; then
+  eval "$(pyenv init -)"
+  pyenv virtualenvwrapper
+  if [ ! -d "${HOME}/.virtualenvs/default/" ]; then
+    mkvirtualenv -p /usr/local/bin/python default
+  fi
+  workon default
+  pip install --upgrade $venv_python_pkgs
+fi
+
+# create mkproject path
+mkdir ~/code
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors

@@ -32,6 +32,7 @@
 .node-gyp/
 .npm/
 .oracle_jre_usage
+.pyenv
 .pylint.d
 .sqlite_history
 .ssh
