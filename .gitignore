@@ -23,6 +23,7 @@
 .ipynb_checkpoints/
 .ipython*
 .irssi
+.iterm2_shell_integration.bash
 .jupyter
 .k5login
 .lesshst
