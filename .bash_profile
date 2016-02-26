@@ -1,6 +1,9 @@
 ## source bashrc ##
 [ -f ~/.bashrc ] && source ~/.bashrc
 
+## activate iTerm2 shell integration
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+
 ## activate liquidprompt ##
 [[ $- = *i* ]] && source ~/liquidprompt/liquidprompt
 
