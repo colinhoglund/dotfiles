@@ -12,6 +12,7 @@ brew_pkgs='
   gnu-sed
   nmap
   pyenv-virtualenv
+  python
   ssh-copy-id
   the_silver_searcher
   tmux
@@ -70,6 +71,14 @@ for opt in $git_config; do
   git config --global $key $val
 done
 
+# setup pyenv and deactivate virtualenv before running brew
+if which pyenv-virtualenv-init > /dev/null; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+  pyenv deactivate &> /dev/null
+fi
+
 # install homebrew and packages
 which brew &> /dev/null\
   && warn_installed brew\
@@ -80,21 +89,13 @@ brew upgrade --all
 brew install $brew_pkgs
 
 # setup pyenv and global virtualenv
-if [ -z "$PYENV_VIRTUAL_ENV" ]; then
-  if which pyenv > /dev/null; then
-    eval "$(pyenv init -)"
-    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-    pyenv install $python_version
-    if which pyenv-virtualenv-init > /dev/null; then
-      eval "$(pyenv virtualenv-init -)"
-      pyenv virtualenv $python_version global
-      pyenv global global
-      pyenv activate global
-    fi
-  fi
+if which pyenv-virtualenv-init > /dev/null && ! pyenv virtualenvs | grep global > /dev/null; then
+  pyenv install $python_version
+  pyenv virtualenv $python_version global
 fi
 
 # install/upgrade global python packages
+pyenv activate global &> /dev/null
 [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 
 # install molokai color scheme
