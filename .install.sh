@@ -98,6 +98,9 @@ fi
 pyenv activate global &> /dev/null
 [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 
+# create vi alias
+ln -s /usr/local/bin/vim /usr/local/bin/vi
+
 # install molokai color scheme
 mkdir -p ~/.vim/colors
 [ -f ~/.vim/colors/molokai.vim ]\
