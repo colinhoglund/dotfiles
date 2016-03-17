@@ -78,6 +78,7 @@ if which pyenv-virtualenv-init > /dev/null; then
   eval "$(pyenv virtualenv-init -)"
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
   pyenv global system
+  pyenv deactivate
 fi
 
 # install homebrew and packages
