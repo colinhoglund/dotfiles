@@ -13,6 +13,7 @@ brew_pkgs='
   nmap
   pyenv-virtualenv
   python
+  readline
   ssh-copy-id
   the_silver_searcher
   tmux
@@ -89,13 +90,19 @@ brew upgrade --all
 brew install $brew_pkgs
 
 # setup pyenv and global virtualenv
-if which pyenv-virtualenv-init > /dev/null && ! pyenv virtualenvs | grep global > /dev/null; then
-  pyenv install $python_version
-  pyenv virtualenv $python_version global
+if which pyenv-virtualenv-init > /dev/null; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+  if ! pyenv virtualenvs | grep global > /dev/null; then
+    pyenv install $python_version
+    pyenv virtualenv $python_version global
+  fi
 fi
 
 # install/upgrade global python packages
 pyenv global global
+pyenv activate global
 [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 
 # create vi alias
