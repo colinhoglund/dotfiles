@@ -76,7 +76,7 @@ if which pyenv-virtualenv-init > /dev/null; then
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-  pyenv deactivate &> /dev/null
+  pyenv global system
 fi
 
 # install homebrew and packages
@@ -95,11 +95,11 @@ if which pyenv-virtualenv-init > /dev/null && ! pyenv virtualenvs | grep global 
 fi
 
 # install/upgrade global python packages
-pyenv activate global &> /dev/null
+pyenv global global
 [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 
 # create vi alias
-ln -s /usr/local/bin/vim /usr/local/bin/vi
+[ -f /usr/local/bin/vi ] || ln -s /usr/local/bin/vim /usr/local/bin/vi
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
