@@ -40,4 +40,3 @@ alias sed='gsed'                              # gnu sed
 alias itmux='tmux -CC'                        # tmux w/ iTerm integration
 alias tkill='tmux kill-session'               # kill tmux session
 alias tlist='tmux list-sessions'              # list tmux sessions
-alias gactivate='pyenv activate global'       # activate global venv
