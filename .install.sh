@@ -82,7 +82,7 @@ if which pyenv-virtualenv-init > /dev/null; then
 fi
 
 # install homebrew and packages
-which brew &> /dev/null\
+which brew > /dev/null\
   && warn_installed brew\
   || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew doctor
@@ -99,15 +99,17 @@ if which pyenv-virtualenv-init > /dev/null; then
     pyenv install $python_version
     pyenv virtualenv $python_version global
   fi
+
+  # install/upgrade global python packages
+  pyenv global global
+  pyenv activate global
+  [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 fi
 
-# install/upgrade global python packages
-pyenv global global
-pyenv activate global
-[ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
-
 # create vi alias
-[ -f /usr/local/bin/vi ] || ln -s /usr/local/bin/vim /usr/local/bin/vi
+if [ -f /usr/local/bin/vim ] && [ ! -f /usr/local/bin/vi ]; then
+  ln -s /usr/local/bin/vim /usr/local/bin/vi
+fi
 
 # install molokai color scheme
 mkdir -p ~/.vim/colors
