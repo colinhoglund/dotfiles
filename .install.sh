@@ -33,7 +33,6 @@ git_config='
   alias.st=status
 '
 
-# colorama 0.3.6 breaks jedi-vim for some reason...
 global_python_pkgs='
   jupyter
   pip
@@ -41,6 +40,7 @@ global_python_pkgs='
   setuptools
 '
   # Old Packages
+  # colorama 0.3.6 breaks jedi-vim for some reason...
   #colorama==0.3.5
 
 ######## Functions ########
