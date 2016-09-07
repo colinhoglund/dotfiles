@@ -35,12 +35,13 @@ git_config='
 
 # colorama 0.3.6 breaks jedi-vim for some reason...
 global_python_pkgs='
-  colorama==0.3.5
   jupyter
   pip
   pylint
   setuptools
 '
+  # Old Packages
+  #colorama==0.3.5
 
 ######## Functions ########
 
