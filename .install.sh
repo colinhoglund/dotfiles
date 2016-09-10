@@ -10,6 +10,7 @@ brew_pkgs='
   coreutils
   git
   gnu-sed
+  gnu-tar
   nmap
   pyenv-virtualenv
   python
