@@ -39,6 +39,7 @@ global_python_pkgs='
   pip
   pylint
   setuptools
+  virtualenv
 '
   # Old Packages
   # colorama 0.3.6 breaks jedi-vim for some reason...
