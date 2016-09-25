@@ -79,7 +79,12 @@ command GB Gblame
 command GD Gdiff
 
 " syntastic settings
-command SynToggle SyntasticToggleMode
+" toggle Syntastic on/off
+nnoremap <F5> :SyntasticToggleMode<CR>
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['python', 'pylint', 'flake8', 'pep8']
+" disable checks
+" C0325 = unnecessary parens for print
+let g:syntastic_python_pylint_args = '--disable=C0325'

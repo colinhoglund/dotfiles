@@ -35,7 +35,9 @@ git_config='
 '
 
 global_python_pkgs='
+  flake8
   jupyter
+  pep8
   pip
   pylint
   setuptools
