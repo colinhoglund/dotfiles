@@ -88,3 +88,4 @@ let g:syntastic_python_checkers = ['python', 'flake8']
 " disable checks
 " C0325 = unnecessary parens for print
 let g:syntastic_python_pylint_args = '--disable=C0325'
+let g:syntastic_python_flake8_args = '--ignore=E501'
