@@ -16,6 +16,7 @@ Plugin 'fatih/vim-go'
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
+Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'pearofducks/ansible-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
