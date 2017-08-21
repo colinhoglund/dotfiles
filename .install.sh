@@ -3,7 +3,7 @@
 ######## Variables ########
 
 os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
-python_version='2.7.11'
+python_version='2.7.13'
 
 brew_pkgs='
   bash-completion
