@@ -43,9 +43,6 @@ global_python_pkgs='
   setuptools
   virtualenv
 '
-  # Old Packages
-  # colorama 0.3.6 breaks jedi-vim for some reason...
-  #colorama==0.3.5
 
 ######## Functions ########
 
@@ -101,7 +98,7 @@ if which pyenv-virtualenv-init > /dev/null; then
   eval "$(pyenv virtualenv-init -)"
   export PYENV_VIRTUALENV_DISABLE_PROMPT=1
   if ! pyenv virtualenvs | grep global > /dev/null; then
-    pyenv install $python_version
+    PYTHON_CONFIGURE_OPTS="--enable-framework" pyenv install $python_version
     pyenv virtualenv $python_version global
   fi
 
@@ -121,16 +118,6 @@ mkdir -p ~/.vim/colors
 [ -f ~/.vim/colors/molokai.vim ]\
   && warn_installed 'vim colorscheme: molokai'\
   || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
-
-# install powerline fonts
-ls ~/Library/Fonts/ | grep -i 'for powerline' &> /dev/null
-if [ $? -eq 0 ]; then
-  warn_installed 'powerline fonts'
-else
-  git clone https://github.com/powerline/fonts.git /tmp/pl-fonts
-  /tmp/pl-fonts/install.sh
-  rm -rf /tmp/pl-fonts
-fi
 
 # install Vundle
 [ -d ~/.vim/bundle/Vundle.vim/ ]\

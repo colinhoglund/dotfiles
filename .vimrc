@@ -10,19 +10,19 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Custom vim bundles
-Plugin 'bling/vim-airline'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'fatih/vim-go'
 Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'pearofducks/ansible-vim'
+Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
+Plugin 'valloric/youcompleteme'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-syntastic/syntastic'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -50,7 +50,8 @@ set expandtab
 " airline settings
 set laststatus=2
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+let g:airline_left_sep=''
+let g:airline_right_sep=''
 
 " split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -84,6 +85,9 @@ command GD Gdiff
 " syntastic settings
 " toggle Syntastic on/off
 nnoremap <F5> :SyntasticToggleMode<CR>
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_wq = 0
@@ -92,3 +96,6 @@ let g:syntastic_python_checkers = ['python', 'flake8']
 " C0325 = unnecessary parens for print
 let g:syntastic_python_pylint_args = '--disable=C0325'
 let g:syntastic_python_flake8_args = '--ignore=E501'
+
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_python_binary_path = 'python'
