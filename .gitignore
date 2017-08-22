@@ -35,6 +35,7 @@
 .oracle_jre_usage
 .pyenv
 .pylint.d
+.python-version
 .sqlite_history
 .ssh
 .subversion
