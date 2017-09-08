@@ -1,11 +1,9 @@
 ## source bashrc ##
 [ -f ~/.bashrc ] && source ~/.bashrc
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
 ## activate iTerm2 shell integration
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
-
-## activate liquidprompt ##
-[[ $- = *i* ]] && source ~/liquidprompt/liquidprompt
 
 ## activate bash completion ##
 [ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion

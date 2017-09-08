@@ -27,7 +27,6 @@
 .jupyter
 .k5login
 .lesshst
-.liquidpromptrc
 .mitmproxy/
 .mysql_history
 .node-gyp/
@@ -60,6 +59,5 @@ PycharmProjects
 Vagrantfile
 VirtualBox VMs
 code
-liquidprompt
 node_modules/
 vagrant.yml

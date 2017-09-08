@@ -130,14 +130,6 @@ gem list | grep i2cssh &> /dev/null\
   && warn_installed i2cssh\
   || sudo gem install i2cssh
 
-# install liquidprompt
-if [ -d ~/liquidprompt/ ]; then
-  warn_installed liquidprompt
-else
-  git clone https://github.com/nojhan/liquidprompt.git ~/liquidprompt
-  cp ~/liquidprompt/liquidpromptrc-dist ~/.liquidpromptrc
-fi
-
 # install slate window manager
 if [ -d /Applications/Slate.app ]; then
   warn_installed Slate
