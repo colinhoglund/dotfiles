@@ -17,6 +17,7 @@ brew_pkgs='
   readline
   ssh-copy-id
   the_silver_searcher
+  tree
   tmux
   vim
   watch
