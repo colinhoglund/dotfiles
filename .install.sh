@@ -11,6 +11,7 @@ brew_pkgs='
   git
   gnu-sed
   gnu-tar
+  httpie
   nmap
   pyenv-virtualenv
   python
