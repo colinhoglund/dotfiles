@@ -47,7 +47,7 @@ function set_git_branch {
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
   # Set the final branch string.
-  BRANCH="${state}(${branch})${remote}${COLOR_NONE} "
+  BRANCH="${state}(${branch})${remote}${COLOR_NONE}"
 }
 
 # Determine active Python virtualenv details.
@@ -55,14 +55,19 @@ function set_virtualenv () {
   if [[ -z "$VIRTUAL_ENV" ]] ; then
     PYTHON_VIRTUALENV=""
   else
-    PYTHON_VIRTUALENV="${BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE} "
+    PYTHON_VIRTUALENV="${BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
   fi
+}
+
+function set_k8s () {
+  K8S_CONTEXT="${YELLOW}{$(kubectl config current-context 2> /dev/null)}${COLOR_NONE}"
 }
 
 # Set the full bash prompt.
 function set_bash_prompt () {
   # Set the PYTHON_VIRTUALENV variable.
   set_virtualenv
+  set_k8s
 
   # Set the BRANCH variable.
   if is_git_repository ; then
@@ -72,7 +77,7 @@ function set_bash_prompt () {
   fi
 
   # Set the bash prompt variable.
-  PS1="${PYTHON_VIRTUALENV}${BRANCH}${LIGHT_GRAY}\u ${YELLOW}\w${COLOR_NONE} \$ "
+  PS1="${PYTHON_VIRTUALENV} ${BRANCH} ${K8S_CONTEXT} ${LIGHT_GRAY}\w${COLOR_NONE} \$ "
 }
 
 # Tell bash to execute this function just before displaying its prompt.
