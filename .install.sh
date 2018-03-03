@@ -56,11 +56,6 @@ warn_installed() {
 
 ######## Tasks ########
 
-# copy git configuration
-[ -f ~/.gitconfig ]\
-  && warn_installed ~/.gitconfig\
-  || cp gitconfig .gitconfig
-
 # setup git globals
 for id in user.name user.email; do
   git config --global $id &> /dev/null
