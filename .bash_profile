@@ -14,7 +14,8 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 ## env preferences ##
-PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin
+export EDITOR=vi
 export CLICOLOR=1
 export GREP_OPTIONS='--color=auto'
 
