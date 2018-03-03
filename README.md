@@ -3,23 +3,18 @@ OS X dotfiles
 **Please note:** These dotfiles contain many tools specific to Python development
 
 Install Xcode command line tools:
-```
-xcode-select --install
-```
+
+    xcode-select --install
 
 Clone repo into home directory:
-```
-cd ~/
-git init .
-git remote add origin https://github.com/colinhoglund/dotfiles.git
-git fetch
-git checkout -t origin/master
-```
+
+    git clone https://github.com/colinhoglund/dotfiles.git
+    cd dotfiles
+    make
 
 Deactivate any existing python virtualenvs and run .install.sh script:
-```
-~/.install.sh
-```
+
+    ~/.install.sh
 
 youcompleteme will need to be compiled before it does anything
 https://github.com/Valloric/YouCompleteMe#mac-os-x
