@@ -11,6 +11,7 @@ Clone repo into home directory:
     git clone https://github.com/colinhoglund/dotfiles.git
     cd dotfiles
     make
+    . ~/.bash_profile
 
 Deactivate any existing python virtualenvs and run .install.sh script:
 
