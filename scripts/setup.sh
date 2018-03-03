@@ -3,10 +3,10 @@
 [ -z "$1" ] && echo "Usage: $0 <link|unlink|gitconfig>" && exit 1
 
 links='.bash_profile
-          .bash_prompt
-          .ipython
-          .slate
-          .vimrc'
+       .bash_prompt
+       .ipython
+       .slate
+       .vimrc'
 
 git_config='push.default=simple
             alias.df=diff
