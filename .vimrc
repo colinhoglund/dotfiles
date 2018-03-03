@@ -12,6 +12,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Custom vim bundles
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'fatih/vim-go'
+Plugin 'fatih/vim-hclfmt'
 Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
