@@ -1,5 +1,5 @@
 .PHONY: all
-all: gitconfig link
+all: link gitconfig vim
 
 .PHONY: link
 link:
@@ -12,3 +12,7 @@ unlink:
 .PHONY: gitconfig
 gitconfig:
 	./scripts/setup.sh gitconfig
+
+.PHONY: vim
+vim:
+	./scripts/setup.sh vim

@@ -20,7 +20,6 @@ brew_pkgs='
   the_silver_searcher
   tree
   tmux
-  vim
   watch
   wget
 '
@@ -78,23 +77,6 @@ if which pyenv-virtualenv-init > /dev/null; then
   pyenv activate global
   [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 fi
-
-# create vi alias
-if [ -f /usr/local/bin/vim ] && [ ! -f /usr/local/bin/vi ]; then
-  ln -s /usr/local/bin/vim /usr/local/bin/vi
-fi
-
-# install molokai color scheme
-mkdir -p ~/.vim/colors
-[ -f ~/.vim/colors/molokai.vim ]\
-  && warn_installed 'vim colorscheme: molokai'\
-  || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
-
-# install Vundle
-[ -d ~/.vim/bundle/Vundle.vim/ ]\
-  && warn_installed Vundle\
-  || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
 
 # install cluster ssh
 gem list | grep i2cssh &> /dev/null\

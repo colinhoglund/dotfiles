@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -z "$1" ] && echo "Usage: $0 <link|unlink|gitconfig>" && exit 1
+[ -z "$1" ] && echo "Usage: $0 <link|unlink|gitconfig|vim>" && exit 1
 
 links='.bash_profile
        .bash_prompt
@@ -35,6 +35,26 @@ gitconfig() {
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
 }
 
+vim() {
+  brew install vim
+
+  # create vi alias
+  [ -f /usr/local/bin/vim ] && ln -fs /usr/local/bin/vim /usr/local/bin/vi
+
+  # install molokai color scheme
+  mkdir -p ~/.vim/colors
+  [ -f ~/.vim/colors/molokai.vim ] \
+    && warn_installed 'vim colorscheme: molokai' \
+    || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
+
+  # install Vundle
+  [ -d ~/.vim/bundle/Vundle.vim/ ] \
+    && warn_installed Vundle \
+    || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+  /usr/local/bin/vim +PluginInstall +qall
+}
+
 link() {
   for i in $links; do
     file=~/$i
@@ -52,6 +72,11 @@ unlink() {
     # only remove if it's a link
     [ -h "$file" ] && rm $file
   done
+}
+
+warn_installed() {
+  warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
+  echo "${warn_text} $1 already exists"
 }
 
 $1
