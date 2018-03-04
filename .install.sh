@@ -100,18 +100,3 @@ else
   esac
   [ -n "$slate_sql" ] && sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
 fi
-
-# install iTerm2
-if [ -d /Applications/iTerm.app/ ]; then
-  warn_installed iTerm
-else
-  iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
-              | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
-              | head -1)
-  iterm_zipfile=$(basename $iterm_url)
-
-  cd /tmp
-  wget $iterm_url
-  unzip -qd /Applications/ $iterm_zipfile
-  rm -f $iterm_zipfile
-fi
