@@ -64,7 +64,7 @@ link() {
     [ -e "$file" ] && [ ! -L "$file" ] \
       && rm -rf $file.bak \
       && mv $file $file.bak
-    ln -fs $(pwd)/$i $file
+    ln -fhs $(pwd)/$i $file
   done
 }
 
