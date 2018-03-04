@@ -1,6 +1,9 @@
 #!/bin/bash
 
-[ -z "$1" ] && echo "Usage: $0 <link|unlink|gitconfig|vim>" && exit 1
+[ -z "$1" ] \
+  && funcs=$(grep '^[a-zA-Z0-9]*()' scripts/setup.sh | cut -d\( -f1 | xargs | sed 's/ /|/g') \
+  && echo "Usage: $0 <${funcs}>" \
+  && exit 1
 
 links='.bash_profile
        .bash_prompt
