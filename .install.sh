@@ -2,7 +2,6 @@
 
 ######## Variables ########
 
-os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
 python_version='2.7.13'
 
 brew_pkgs='
@@ -82,21 +81,3 @@ fi
 gem list | grep i2cssh &> /dev/null\
   && warn_installed i2cssh\
   || sudo gem install i2cssh
-
-# install slate window manager
-if [ -d /Applications/Slate.app ]; then
-  warn_installed Slate
-else
-  $(curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
-  # enable assistive devices
-  slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
-  case "$os_x_version" in
-    10.11)
-      slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
-      ;;
-    10.10)
-      slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL);"
-      ;;
-  esac
-  [ -n "$slate_sql" ] && sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
-fi
