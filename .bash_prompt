@@ -56,36 +56,33 @@ function _set_git_branch {
 
 # Determine active Python virtualenv details.
 function _set_virtualenv {
-  printf "${FG_LIGHT_BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
+  [ -n "$VIRTUAL_ENV" ] && printf "${FG_LIGHT_BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
 }
 
 function _set_k8s {
-  [ -n "$KUBECONFIG" ] \
-    && printf "${FG_WHITE}${BG_BLUE} $(grep current-context $KUBECONFIG | awk '{print $2}') ${COLOR_NONE}"
-  [ -f ~/.kube/config ] \
-    && printf "${FG_WHITE}${BG_BLUE} $(grep current-context ~/.kube/config | awk '{print $2}') ${COLOR_NONE}"
+  # if KUBECONFIG is unset, set it to default ~/.kube/config
+  [ -z "$KUBECONFIG" ] && local KUBECONFIG=~/.kube/config
+  # only configure if KUBECONFIG exists
+  if [ -f $KUBECONFIG ]; then
+    local context=$(grep current-context $KUBECONFIG | awk '{print $2}')
+    local namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name == '$context')].context.namespace}")
+    printf "${FG_WHITE}${BG_BLUE} $context:$namespace ${COLOR_NONE}"
+  fi
 }
 
 function _set_aws {
-  printf "${FG_WHITE}${BG_ORANGE} ${AWS_PROFILE} ${COLOR_NONE}"
+  [ -n "$AWS_PROFILE" ] && printf "${FG_WHITE}${BG_ORANGE} ${AWS_PROFILE} ${COLOR_NONE}"
 }
 
 # Set the full bash prompt.
 function _set_bash_prompt {
-  BASE_PS=" ${LIGHT_GRAY}\w${COLOR_NONE} \$ "
+  BASE_PS="${LIGHT_GRAY}\w${COLOR_NONE} \$"
   PS1=''
-
-  [ -n "$AWS_PROFILE" ] && PS1="${PS1}$(_set_aws)"
-
-  if [ -f ~/.kube/config ] || [ -n "$KUBECONFIG" ]; then
-    PS1="${PS1}$(_set_k8s)"
-  fi
-
-  [ -n "$VIRTUAL_ENV" ] && PS1="${PS1} $(_set_virtualenv)"
-
-  which git &>/dev/null && git rev-parse --git-dir &>/dev/null && PS1="${PS1} $(_set_git_branch)"
-
-  PS1="${PS1}${BASE_PS}"
+  PS1="${PS1}$(_set_aws)"
+  PS1="${PS1}$(_set_k8s && printf ' ')"
+  PS1="${PS1}$(_set_virtualenv && printf ' ')"
+  which git &>/dev/null && git rev-parse --git-dir &>/dev/null && PS1="${PS1}$(_set_git_branch && printf ' ')"
+  PS1="${PS1}${BASE_PS} "
 }
 
 # Tell bash to execute this function just before displaying its prompt.
