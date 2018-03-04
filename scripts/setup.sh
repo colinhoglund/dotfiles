@@ -30,9 +30,9 @@ gitconfig() {
   done
 
   for opt in $config; do
-    key=`echo $opt | cut -d= -f1`
-    val=`echo $opt | cut -d= -f2`
-    git config --global $key $val
+    key=$(echo "$opt" | cut -d= -f1)
+    val=$(echo "$opt" | cut -d= -f2)
+    git config --global "$key" "$val"
   done
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
 }
@@ -45,14 +45,18 @@ vimconfig() {
 
   # install molokai color scheme
   mkdir -p ~/.vim/colors
-  [ -f ~/.vim/colors/molokai.vim ] \
-    && warn_installed 'vim colorscheme: molokai' \
-    || wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
+  if [ -f ~/.vim/colors/molokai.vim ]; then
+    warn_installed 'vim colorscheme: molokai'
+  else
+    wget https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim -O ~/.vim/colors/molokai.vim
+  fi
 
   # install Vundle
-  [ -d ~/.vim/bundle/Vundle.vim/ ] \
-    && warn_installed Vundle \
-    || git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  if [ -d ~/.vim/bundle/Vundle.vim/ ]; then
+    warn_installed Vundle
+  else
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+  fi
 
   /usr/local/bin/vim +PluginInstall +qall
 }
@@ -61,10 +65,11 @@ link() {
   for i in $links; do
     file=~/$i
     # backup existing file if it's not a soft link
-    [ -e "$file" ] && [ ! -L "$file" ] \
-      && rm -rf $file.bak \
-      && mv $file $file.bak
-    ln -fhs $(pwd)/$i $file
+    if [ -e "$file" ] && [ ! -L "$file" ]; then
+      rm -rf "$file.bak"
+      mv "$file" "$file.bak"
+    fi
+    ln -fhs "$(pwd)/$i" "$file"
   done
 }
 
@@ -72,7 +77,7 @@ unlink() {
   for i in $links; do
     file=~/$i
     # only remove if it's a link
-    [ -h "$file" ] && rm $file
+    [ -h "$file" ] && rm "$file"
   done
 }
 
@@ -83,12 +88,12 @@ iterm() {
     iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
                 | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
                 | head -1)
-    iterm_zipfile=$(basename $iterm_url)
+    iterm_zipfile=$(basename "$iterm_url")
 
-    cd /tmp
-    wget $iterm_url
-    unzip -qd /Applications/ $iterm_zipfile
-    rm -f $iterm_zipfile
+    cd /tmp || exit 1
+    wget "$iterm_url"
+    unzip -qd /Applications/ "$iterm_zipfile"
+    rm -f "$iterm_zipfile"
   fi
 }
 
@@ -96,7 +101,7 @@ chrome() {
   if [ -d /Applications/Google\ Chrome.app/ ]; then
     warn_installed 'Google Chrome'
   else
-    cd /tmp
+    cd /tmp || exit 1
     wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
     hdiutil attach -nobrowse /tmp/googlechrome.dmg
     sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
@@ -109,7 +114,7 @@ slate() {
   if [ -d /Applications/Slate.app ]; then
     warn_installed Slate
   else
-    $(curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/)
+    curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/
     # enable assistive devices
     os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
     slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
@@ -149,4 +154,4 @@ main() {
   esac
 }
 
-main $1
+main "$1"
