@@ -1,5 +1,5 @@
 .PHONY: all
-all: link gitconfig vim
+all: link git vim
 
 %:
 	./scripts/setup.sh $(@)

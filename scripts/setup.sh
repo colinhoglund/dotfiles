@@ -1,26 +1,25 @@
 #!/bin/bash
 
-[ -z "$1" ] \
-  && funcs=$(grep '^[a-zA-Z0-9]*()' scripts/setup.sh | cut -d\( -f1 | xargs | sed 's/ /|/g') \
-  && echo "Usage: $0 <${funcs}>" \
-  && exit 1
-
-links='.bash_profile
-       .bash_prompt
-       .ipython
-       .slate
-       .vimrc'
-
-git_config='push.default=simple
-            alias.df=diff
-            alias.ci=commit
-            alias.co=checkout
-            alias.br=branch
-            alias.pl=pull
-            alias.ps=push
-            alias.st=status'
+links='
+  .bash_profile
+  .bash_prompt
+  .ipython
+  .slate
+  .vimrc
+'
 
 gitconfig() {
+  config='
+    push.default=simple
+    alias.df=diff
+    alias.ci=commit
+    alias.co=checkout
+    alias.br=branch
+    alias.pl=pull
+    alias.ps=push
+    alias.st=status
+  '
+
   # setup git globals
   for id in user.name user.email; do
     git config --global $id &> /dev/null
@@ -30,7 +29,7 @@ gitconfig() {
       && git config --global $id "$input"
   done
 
-  for opt in $git_config; do
+  for opt in $config; do
     key=`echo $opt | cut -d= -f1`
     val=`echo $opt | cut -d= -f2`
     git config --global $key $val
@@ -38,7 +37,7 @@ gitconfig() {
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
 }
 
-vim() {
+vimconfig() {
   brew install vim
 
   # create vi alias
@@ -82,4 +81,20 @@ warn_installed() {
   echo "${warn_text} $1 already exists"
 }
 
-$1
+usage() {
+    echo "Usage: $0 <git|link|unlink|vim>"
+}
+
+main() {
+  [ -z "$1" ] && usage && exit 1
+
+  case "$1" in
+    git) gitconfig;;
+    link) link;;
+    unlink) unlink;;
+    vim) vimconfig;;
+    *) usage;;
+  esac
+}
+
+main $1
