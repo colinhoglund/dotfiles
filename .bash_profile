@@ -1,3 +1,8 @@
+#!/bin/bash
+
+# ignore source errors from shellcheck
+# shellcheck source=/dev/null
+
 ## source bashrc ##
 [ -f ~/.bashrc ] && source ~/.bashrc
 [ -f ~/.bash_prompt ] && source ~/.bash_prompt
@@ -6,7 +11,7 @@
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 ## activate bash completion ##
-[ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion
+[ -f "$(brew --prefix)/etc/bash_completion" ] && source $(brew --prefix)/etc/bash_completion
 
 ## activate pyenv ##
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
