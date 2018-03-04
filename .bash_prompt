@@ -8,11 +8,6 @@
  LIGHT_GRAY="\[\033[0;37m\]"
  COLOR_NONE="\[\e[0m\]"
 
-# Detect whether the current directory is a git repository.
-function is_git_repository {
-  git rev-parse --git-dir &> /dev/null
-}
-
 # Determine the branch/state information for this git repository.
 function set_git_branch {
   # Capture the output of the "git status" command.
@@ -47,37 +42,37 @@ function set_git_branch {
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
   # Set the final branch string.
-  BRANCH="${state}(${branch})${remote}${COLOR_NONE}"
+  printf "${state}(${branch})${remote}${COLOR_NONE}"
 }
 
 # Determine active Python virtualenv details.
 function set_virtualenv () {
-  if [[ -z "$VIRTUAL_ENV" ]] ; then
-    PYTHON_VIRTUALENV=""
-  else
-    PYTHON_VIRTUALENV="${BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
-  fi
+  printf "${BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
 }
 
 function set_k8s () {
-  K8S_CONTEXT="${YELLOW}{$(kubectl config current-context 2> /dev/null)}${COLOR_NONE}"
+  printf "${YELLOW}{$(kubectl config current-context 2> /dev/null)}${COLOR_NONE}"
 }
 
 # Set the full bash prompt.
 function set_bash_prompt () {
-  # Set the PYTHON_VIRTUALENV variable.
-  set_virtualenv
-  set_k8s
+  PS1=''
 
-  # Set the BRANCH variable.
-  if is_git_repository ; then
-    set_git_branch
-  else
-    BRANCH=''
+  git rev-parse --git-dir &> /dev/null \
+    && PS1="$(set_git_branch) " \
+
+  [ -n "$VIRTUAL_ENV" ] \
+    && PS1="${PS1}$(set_virtualenv) "
+
+  if [ -f ~/.kube/config ] || [ -n "$KUBECONFIG" ]; then
+    PS1="${PS1}$(set_k8s) "
   fi
 
-  # Set the bash prompt variable.
-  PS1="${PYTHON_VIRTUALENV} ${BRANCH} ${K8S_CONTEXT} ${LIGHT_GRAY}\w${COLOR_NONE} \$ "
+  if [ -n "$PS1" ]; then
+    PS1="${PS1}${LIGHT_GRAY}\n\w${COLOR_NONE} \$ "
+  else
+    PS1="${LIGHT_GRAY}\w${COLOR_NONE} \$ "
+  fi
 }
 
 # Tell bash to execute this function just before displaying its prompt.
