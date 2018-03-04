@@ -1,25 +1,34 @@
 #!/bin/bash
 
 # The various escape codes that we can use to color our prompt.
-        RED="\[\033[0;31m\]"
-     YELLOW="\[\033[1;33m\]"
-      GREEN="\[\033[0;32m\]"
-       BLUE="\[\033[1;34m\]"
- LIGHT_GRAY="\[\033[0;37m\]"
- COLOR_NONE="\[\e[0m\]"
+COLOR_NONE="\[\e[0m\]"
+
+FG_BLACK="\[\e[38;5;232m\]"
+FG_GREEN="\[\033[0;32m\]"
+FG_LIGHT_BLUE="\[\e[38;5;081m\]"
+FG_LIGHT_GRAY="\[\e[0;37m\]"
+FG_RED="\[\033[0;31m\]"
+FG_WHITE="\[\e[38;5;231m\]"
+FG_YELLOW="\[\033[1;33m\]"
+
+BG_BLUE="\[\e[48;5;025m\]"
+BG_GREEN="\[\e[48;5;022m\]"
+BG_ORANGE="\[\e[48;5;130m\]"
+BG_RED="\[\e[48;5;088m\]"
+BG_YELLOW="\[\e[48;5;230m\]"
 
 # Determine the branch/state information for this git repository.
-function set_git_branch {
+function _set_git_branch {
   # Capture the output of the "git status" command.
   git_status="$(git status 2> /dev/null)"
 
   # Set color based on clean/staged/dirty.
   if [[ ${git_status} =~ "Changes not staged for commit" ]]; then
-    state="${RED}"
+    state="$FG_RED"
   elif [[ ${git_status} =~ "Changes to be committed" ]] || [[ ${git_status} =~ "Untracked files" ]]; then
-    state="${YELLOW}"
+    state="$FG_YELLOW"
   else
-    state="${GREEN}"
+    state="$FG_GREEN"
   fi
 
   # Set arrow icon based on status against remote.
@@ -42,31 +51,38 @@ function set_git_branch {
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
   # Set the final branch string.
-  printf "${state}(${branch})${remote}${COLOR_NONE}"
+  printf "${state}(${branch}${remote})${COLOR_NONE}"
 }
 
 # Determine active Python virtualenv details.
-function set_virtualenv () {
-  printf "${BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
+function _set_virtualenv {
+  printf "${FG_LIGHT_BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
 }
 
-function set_k8s () {
-  printf "${YELLOW}{$(kubectl config current-context 2> /dev/null)}${COLOR_NONE}"
+function _set_k8s {
+  [ -n "$KUBECONFIG" ] \
+    && printf "${FG_WHITE}${BG_BLUE} $(grep current-context $KUBECONFIG | awk '{print $2}') ${COLOR_NONE}"
+  [ -f ~/.kube/config ] \
+    && printf "${FG_WHITE}${BG_BLUE} $(grep current-context ~/.kube/config | awk '{print $2}') ${COLOR_NONE}"
+}
+
+function _set_aws {
+  printf "${FG_WHITE}${BG_ORANGE} ${AWS_PROFILE} ${COLOR_NONE}"
 }
 
 # Set the full bash prompt.
-function set_bash_prompt () {
+function _set_bash_prompt {
   PS1=''
 
-  git rev-parse --git-dir &> /dev/null \
-    && PS1="$(set_git_branch) " \
-
-  [ -n "$VIRTUAL_ENV" ] \
-    && PS1="${PS1}$(set_virtualenv) "
+  [ -n "$AWS_PROFILE" ] && PS1="${PS1}$(_set_aws)"
 
   if [ -f ~/.kube/config ] || [ -n "$KUBECONFIG" ]; then
-    PS1="${PS1}$(set_k8s) "
+    PS1="${PS1}$(_set_k8s)"
   fi
+
+  [ -n "$VIRTUAL_ENV" ] && PS1="${PS1} $(_set_virtualenv)"
+
+  which git &>/dev/null && git rev-parse --git-dir &>/dev/null && PS1="${PS1} $(_set_git_branch)"
 
   if [ -n "$PS1" ]; then
     PS1="${PS1}${LIGHT_GRAY}\n\w${COLOR_NONE} \$ "
@@ -76,4 +92,4 @@ function set_bash_prompt () {
 }
 
 # Tell bash to execute this function just before displaying its prompt.
-PROMPT_COMMAND=set_bash_prompt
+PROMPT_COMMAND=_set_bash_prompt
