@@ -18,7 +18,7 @@ BG_RED="\[\e[48;5;088m\]"
 BG_YELLOW="\[\e[48;5;230m\]"
 
 # Determine the branch/state information for this git repository.
-function _set_git_branch {
+_set_git_branch() {
   # Capture the output of the "git status" command.
   git_status="$(git status 2> /dev/null)"
 
@@ -55,11 +55,11 @@ function _set_git_branch {
 }
 
 # Determine active Python virtualenv details.
-function _set_virtualenv {
+_set_virtualenv() {
   [ -n "$VIRTUAL_ENV" ] && printf "${FG_LIGHT_BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
 }
 
-function _set_k8s {
+_set_k8s() {
   # if KUBECONFIG is unset, set it to default ~/.kube/config
   [ -z "$KUBECONFIG" ] && local KUBECONFIG=~/.kube/config
   # only configure if KUBECONFIG exists
@@ -70,12 +70,12 @@ function _set_k8s {
   fi
 }
 
-function _set_aws {
+_set_aws() {
   [ -n "$AWS_PROFILE" ] && printf "${FG_WHITE}${BG_ORANGE} ${AWS_PROFILE} ${COLOR_NONE}"
 }
 
 # Set the full bash prompt.
-function _set_bash_prompt {
+_set_bash_prompt() {
   BASE_PS="${LIGHT_GRAY}\w${COLOR_NONE} \$"
   PS1=''
   PS1="${PS1}$(_set_aws)"
