@@ -22,11 +22,11 @@ gitconfig() {
 
   # setup git globals
   for id in user.name user.email; do
-    git config --global $id &> /dev/null
-    [ "$?" -ne 0 ]\
-      && echo -n "Enter a git config $id: "\
-      && read input\
-      && git config --global $id "$input"
+    if ! git config --global $id &> /dev/null; then
+      echo -n "Enter a git config $id: "
+      read -r input
+      git config --global $id "$input"
+    fi
   done
 
   for opt in $config; do
