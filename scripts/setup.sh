@@ -76,19 +76,33 @@ unlink() {
   done
 }
 
+chrome() {
+  if [ -d /Applications/Google\ Chrome.app/ ]; then
+    warn_installed 'Google Chrome'
+  else
+    cd /tmp
+    wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
+    hdiutil attach -nobrowse /tmp/googlechrome.dmg
+    sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
+    umount /Volumes/Google\ Chrome/
+    rm -f /tmp/googlechrome.dmg
+  fi
+}
+
 warn_installed() {
   warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
   echo "${warn_text} $1 already exists"
 }
 
 usage() {
-    echo "Usage: $0 <git|link|unlink|vim>"
+    echo "Usage: $0 <link|unlink|git|vim|chrome>"
 }
 
 main() {
   [ -z "$1" ] && usage && exit 1
 
   case "$1" in
+    chrome) chrome;;
     git) gitconfig;;
     link) link;;
     unlink) unlink;;

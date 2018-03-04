@@ -115,15 +115,3 @@ else
   unzip -qd /Applications/ $iterm_zipfile
   rm -f $iterm_zipfile
 fi
-
-# install chrome
-if [ -d /Applications/Google\ Chrome.app/ ]; then
-  warn_installed 'Google Chrome'
-else
-  cd /tmp
-  wget https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg
-  hdiutil attach -nobrowse /tmp/googlechrome.dmg
-  sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
-  umount /Volumes/Google\ Chrome/
-  rm -f /tmp/googlechrome.dmg
-fi
