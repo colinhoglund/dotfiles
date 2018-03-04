@@ -5,6 +5,7 @@ all: shellcheck link git vim iterm chrome slate
 shellcheck:
 	which shellcheck >/dev/null || brew install shellcheck
 	shellcheck .bash_profile
+	shellcheck .bash_prompt
 	shellcheck ./scripts/setup.sh
 
 %:

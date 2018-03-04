@@ -1,21 +1,14 @@
 #!/bin/bash
 
 # The various escape codes that we can use to color our prompt.
-COLOR_NONE="\[\e[0m\]"
-
-FG_BLACK="\[\e[38;5;232m\]"
-FG_GREEN="\[\033[0;32m\]"
-FG_LIGHT_BLUE="\[\e[38;5;081m\]"
-FG_LIGHT_GRAY="\[\e[0;37m\]"
-FG_RED="\[\033[0;31m\]"
-FG_WHITE="\[\e[38;5;231m\]"
-FG_YELLOW="\[\033[1;33m\]"
-
-BG_BLUE="\[\e[48;5;025m\]"
-BG_GREEN="\[\e[48;5;022m\]"
-BG_ORANGE="\[\e[48;5;130m\]"
-BG_RED="\[\e[48;5;088m\]"
-BG_YELLOW="\[\e[48;5;230m\]"
+COLOR_NONE='\[\e[0m\]'
+BG_BLUE='\[\e[48;5;025m\]'
+BG_ORANGE='\[\e[48;5;130m\]'
+FG_GREEN='\[\033[0;32m\]'
+FG_LIGHT_BLUE='\[\e[38;5;081m\]'
+FG_RED='\[\033[0;31m\]'
+FG_WHITE='\[\e[38;5;231m\]'
+FG_YELLOW='\[\033[1;33m\]'
 
 # Determine the branch/state information for this git repository.
 _set_git_branch() {
@@ -51,12 +44,15 @@ _set_git_branch() {
   branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
 
   # Set the final branch string.
-  printf "${state}(${branch}${remote})${COLOR_NONE}"
+  printf "%s(%s%s)%s" "$state" "$branch" "$remote" "$COLOR_NONE"
 }
 
 # Determine active Python virtualenv details.
 _set_virtualenv() {
-  [ -n "$VIRTUAL_ENV" ] && printf "${FG_LIGHT_BLUE}[$(basename ${VIRTUAL_ENV})]${COLOR_NONE}"
+  if [ -n "$VIRTUAL_ENV" ]; then
+    venv=$(basename "$VIRTUAL_ENV")
+    printf "%s[%s]%s" "$FG_LIGHT_BLUE" "$venv" "$COLOR_NONE"
+  fi
 }
 
 _set_k8s() {
@@ -64,25 +60,41 @@ _set_k8s() {
   [ -z "$KUBECONFIG" ] && local KUBECONFIG=~/.kube/config
   # only configure if KUBECONFIG exists
   if [ -f $KUBECONFIG ]; then
-    local context=$(grep current-context $KUBECONFIG | awk '{print $2}')
-    local namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name == '$context')].context.namespace}")
-    printf "${FG_WHITE}${BG_BLUE} $context:$namespace ${COLOR_NONE}"
+    context=$(grep current-context $KUBECONFIG | awk '{print $2}')
+    namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name == '$context')].context.namespace}")
+    printf "%s%s %s:%s %s" "$FG_WHITE" "$BG_BLUE" "$context" "$namespace" "$COLOR_NONE"
   fi
 }
 
 _set_aws() {
-  [ -n "$AWS_PROFILE" ] && printf "${FG_WHITE}${BG_ORANGE} ${AWS_PROFILE} ${COLOR_NONE}"
+  [ -n "$AWS_PROFILE" ] && printf "%s%s %s %s" "$FG_WHITE" "$BG_ORANGE" "$AWS_PROFILE" "$COLOR_NONE"
+}
+
+# gather all blocks with background colors
+_set_color_blocks() {
+  out=''
+  aws=$(_set_aws) && [ -n "$aws" ] && out="${out}${aws}"
+  k8s=$(_set_k8s) && [ -n "$k8s" ] && out="${out}${k8s}"
+  printf "%s" "$out"
 }
 
 # Set the full bash prompt.
 _set_bash_prompt() {
-  BASE_PS="${LIGHT_GRAY}\w${COLOR_NONE} \$"
   PS1=''
-  PS1="${PS1}$(_set_aws)"
-  PS1="${PS1}$(_set_k8s && printf ' ')"
-  PS1="${PS1}$(_set_virtualenv && printf ' ')"
-  which git &>/dev/null && git rev-parse --git-dir &>/dev/null && PS1="${PS1}$(_set_git_branch && printf ' ')"
-  PS1="${PS1}${BASE_PS} "
+
+  # add a space after blocks
+  blocks=$(_set_color_blocks) && [ -n "$blocks" ] && PS1="$blocks "
+
+  # add a space after python venv
+  py=$(_set_virtualenv) && [ -n "$py" ] && PS1="${PS1}${py} "
+
+  # add a space after git details
+  if which git &>/dev/null && git rev-parse --git-dir &>/dev/null; then
+    git=$(_set_git_branch)
+    PS1="${PS1}${git} "
+  fi
+
+  PS1="${PS1}${LIGHT_GRAY}\\w${COLOR_NONE} \$ "
 }
 
 # Tell bash to execute this function just before displaying its prompt.
