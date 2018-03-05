@@ -11,7 +11,7 @@ FG_WHITE='\[\e[38;5;231m\]'
 FG_YELLOW='\[\033[1;33m\]'
 
 # Determine the branch/state information for this git repository.
-_set_git_branch() {
+_get_git_branch() {
   # Capture the output of the "git status" command.
   git_status="$(git status 2> /dev/null)"
 
@@ -48,14 +48,14 @@ _set_git_branch() {
 }
 
 # Determine active Python virtualenv details.
-_set_virtualenv() {
+_get_virtualenv() {
   if [ -n "$VIRTUAL_ENV" ]; then
     venv=$(basename "$VIRTUAL_ENV")
     printf "%s[%s]%s" "$FG_LIGHT_BLUE" "$venv" "$COLOR_NONE"
   fi
 }
 
-_set_k8s() {
+_get_k8s() {
   # if KUBECONFIG is unset, set it to default ~/.kube/config
   [ -z "$KUBECONFIG" ] && local KUBECONFIG=~/.kube/config
   # only configure if KUBECONFIG exists
@@ -66,31 +66,31 @@ _set_k8s() {
   fi
 }
 
-_set_aws() {
+_get_aws() {
   [ -n "$AWS_PROFILE" ] && printf "%s%s %s %s" "$FG_WHITE" "$BG_ORANGE" "$AWS_PROFILE" "$COLOR_NONE"
 }
 
 # gather all blocks with background colors
-_set_color_blocks() {
+_get_color_blocks() {
   out=''
-  aws=$(_set_aws) && [ -n "$aws" ] && out="${out}${aws}"
-  k8s=$(_set_k8s) && [ -n "$k8s" ] && out="${out}${k8s}"
+  aws=$(_get_aws) && [ -n "$aws" ] && out="${out}${aws}"
+  k8s=$(_get_k8s) && [ -n "$k8s" ] && out="${out}${k8s}"
   printf "%s" "$out"
 }
 
 # Set the full bash prompt.
-_set_bash_prompt() {
+_get_bash_prompt() {
   PS1=''
 
   # add a space after blocks
-  blocks=$(_set_color_blocks) && [ -n "$blocks" ] && PS1="$blocks "
+  blocks=$(_get_color_blocks) && [ -n "$blocks" ] && PS1="$blocks\\n"
 
   # add a space after python venv
-  py=$(_set_virtualenv) && [ -n "$py" ] && PS1="${PS1}${py} "
+  py=$(_get_virtualenv) && [ -n "$py" ] && PS1="${PS1}${py} "
 
   # add a space after git details
   if which git &>/dev/null && git rev-parse --git-dir &>/dev/null; then
-    git=$(_set_git_branch)
+    git=$(_get_git_branch)
     PS1="${PS1}${git} "
   fi
 
@@ -98,4 +98,4 @@ _set_bash_prompt() {
 }
 
 # Tell bash to execute this function just before displaying its prompt.
-PROMPT_COMMAND=_set_bash_prompt
+PROMPT_COMMAND=_get_bash_prompt
