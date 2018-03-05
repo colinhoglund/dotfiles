@@ -19,7 +19,7 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 ## env preferences ##
-export PATH=$PATH:$HOME/bin
+export PATH="/usr/local/sbin:$PATH:$HOME/bin"
 export EDITOR=vi
 export CLICOLOR=1
 export GREP_OPTIONS='--color=auto'
@@ -38,6 +38,8 @@ alias .5='cd ../../../../../'
 alias .6='cd ../../../../../../'
 
 # application aliases
+# alias brew to avoid pyenv config warnings
+alias brew='env PATH=${PATH//$(pyenv root)\/shims:/} brew'
 alias cssh='i2cssh'                           # cluster ssh
 alias glog='git log --pretty=oneline --graph' # pretty git log graph
 alias date='gdate'                            # gnu date
