@@ -8,7 +8,7 @@ links='
   .vimrc
 '
 
-gitconfig() {
+git_config() {
   config='
     push.default=simple
     alias.df=diff
@@ -37,7 +37,7 @@ gitconfig() {
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
 }
 
-vimconfig() {
+vim_config() {
   brew install vim
 
   # create vi alias
