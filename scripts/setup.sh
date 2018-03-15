@@ -144,12 +144,12 @@ main() {
 
   case "$1" in
     chrome) chrome;;
-    git) gitconfig;;
+    git) git_config;;
     iterm) iterm;;
     slate) slate;;
     link) link;;
     unlink) unlink;;
-    vim) vimconfig;;
+    vim) vim_config;;
     *) usage;;
   esac
 }
