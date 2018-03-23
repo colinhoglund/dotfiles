@@ -56,11 +56,9 @@ _get_virtualenv() {
 }
 
 _get_k8s() {
-  # if KUBECONFIG is unset, set it to default ~/.kube/config
-  [ -z "$KUBECONFIG" ] && local KUBECONFIG=~/.kube/config
-  # only configure if KUBECONFIG exists
-  if [ -f $KUBECONFIG ]; then
-    context=$(grep current-context $KUBECONFIG | awk '{print $2}')
+  # only configure if KUBECONFIG is set
+  if [ -n "$KUBECONFIG" ]; then
+    context=$(kubectl config current-context)
     namespace=$(kubectl config view -o jsonpath="{.contexts[?(@.name == '$context')].context.namespace}")
     printf "%s%s %s:%s %s" "$FG_WHITE" "$BG_BLUE" "$context" "$namespace" "$COLOR_NONE"
   fi
