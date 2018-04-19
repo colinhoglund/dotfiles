@@ -44,6 +44,7 @@ alias cssh='i2cssh'                           # cluster ssh
 alias glog='git log --pretty=oneline --graph' # pretty git log graph
 alias date='gdate'                            # gnu date
 alias sed='gsed'                              # gnu sed
+alias dd='gdd'                                # gnu dd
 alias itmux='tmux -CC'                        # tmux w/ iTerm integration
 alias tkill='tmux kill-session'               # kill tmux session
 alias tlist='tmux list-sessions'              # list tmux sessions
