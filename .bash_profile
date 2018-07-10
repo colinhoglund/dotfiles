@@ -11,12 +11,12 @@
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 ## activate bash completion ##
-[ -f "$(brew --prefix)/etc/bash_completion" ] && source $(brew --prefix)/etc/bash_completion
+[ -f "$(brew --prefix)/etc/bash_completion" ] && source "$(brew --prefix)/etc/bash_completion"
 
 ## activate pyenv ##
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+if command -v pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if command -v pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 ## env preferences ##
 export PATH="/usr/local/sbin:$PATH:$HOME/bin"

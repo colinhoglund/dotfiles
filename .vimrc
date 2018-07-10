@@ -1,3 +1,7 @@
+if has('python3')
+  silent! python3 1
+endif
+
 """ Vundle requirements
 set nocompatible              " be iMproved, required
 filetype off                  " required
