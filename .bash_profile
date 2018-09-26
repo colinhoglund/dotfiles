@@ -51,6 +51,26 @@ alias tlist='tmux list-sessions'              # list tmux sessions
 
 # functions
 awsprofile() {
-  [ -z "$1" ] && echo "Usage: awsprofile <AWS_PROFILE>"
-  export AWS_PROFILE=$1
+  [ -z "$1" ] && echo "Usage: awssession <AWS_PROFILE>"
+  role_arn=$(aws configure get role_arn --profile "$1")
+  if [ -n "$role_arn" ]; then
+    # get a session since boto doesn't support profiles with role_arn
+    session=$(aws sts assume-role --profile "$1" --role-arn "$role_arn" --role-session-name "aws_${1}_session")
+    AWS_PROFILE="$1"
+    AWS_ACCESS_KEY_ID="$(jq -rc '.Credentials.AccessKeyId' <<< "$session")"
+    AWS_SECRET_ACCESS_KEY="$(jq -rc '.Credentials.SecretAccessKey' <<< "$session")"
+    AWS_SESSION_TOKEN="$(jq -c '.Credentials.SessionToken' <<< "$session")"
+    AWS_SECURITY_TOKEN="$(jq -c '.Credentials.SessionToken' <<< "$session")"
+    export AWS_ACCESS_KEY_ID
+    export AWS_SECRET_ACCESS_KEY
+    export AWS_SESSION_TOKEN
+    export AWS_SECURITY_TOKEN
+    export AWS_PROFILE
+  else
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    unset AWS_SESSION_TOKEN
+    unset AWS_SECURITY_TOKEN
+    export AWS_PROFILE="$1"
+  fi
 }
