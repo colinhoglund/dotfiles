@@ -24,6 +24,7 @@ brew_pkgs='
 '
 
 global_python_pkgs='
+  awscli
   flake8
   jupyter
   pep8

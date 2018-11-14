@@ -19,7 +19,8 @@ if command -v pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if command -v pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 ## env preferences ##
-export PATH="/usr/local/sbin:$PATH:$HOME/bin"
+export GOPATH=$HOME/go
+export PATH="$GOPATH/bin:/usr/local/sbin:$PATH:$HOME/bin:/usr/local/opt/go/libexec/bin"
 export EDITOR=vi
 export CLICOLOR=1
 export GREP_OPTIONS='--color=auto'
