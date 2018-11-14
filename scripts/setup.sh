@@ -110,6 +110,19 @@ chrome() {
   fi
 }
 
+slack() {
+  if [ -d /Applications/Slack.app/ ]; then
+    warn_installed 'Slack'
+  else
+    cd /tmp || exit 1
+    wget https://slack.com/ssb/download-osx -O slack.dmg
+    hdiutil attach -nobrowse /tmp/slack.dmg
+    sudo cp -r /Volumes/Slack.app/Slack.app /Applications/
+    umount /Volumes/Slack.app/
+    rm -f /tmp/slack.dmg
+  fi
+}
+
 slate() {
   if [ -d /Applications/Slate.app ]; then
     warn_installed Slate
@@ -136,7 +149,7 @@ warn_installed() {
 }
 
 usage() {
-    echo "Usage: $0 <link|unlink|git|vim|iterm|chrome|slate>"
+    echo "Usage: $0 <link|unlink|git|vim|iterm|chrome|slack|slate>"
 }
 
 main() {
@@ -144,6 +157,7 @@ main() {
 
   case "$1" in
     chrome) chrome;;
+    slack) slack;;
     git) git_config;;
     iterm) iterm;;
     slate) slate;;
