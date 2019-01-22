@@ -5,6 +5,7 @@ OS X dotfiles
 Install Xcode command line tools:
 
     xcode-select --install
+    sudo installer -pkg $(find /Library/Developer/CommandLineTools/Packages/ -name 'macOS_SDK_headers_for_macOS*') -target /
 
 Clone repo into home directory:
 

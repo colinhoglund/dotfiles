@@ -2,7 +2,7 @@
 
 ######## Variables ########
 
-python_version='2.7.13'
+python_version='3.7.2'
 
 brew_pkgs='
   bash-completion
