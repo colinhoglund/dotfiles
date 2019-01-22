@@ -11,12 +11,12 @@ Clone repo into home directory:
 
     git clone https://github.com/colinhoglund/dotfiles.git
     cd dotfiles
-    make all
-    . ~/.bash_profile
 
-Deactivate any existing python virtualenvs and run .install.sh script:
+Deactivate any existing python virtualenvs and run installers:
 
     ~/.install.sh
+    make all
+    . ~/.bash_profile
 
 youcompleteme will need to be compiled before it does anything
 https://github.com/Valloric/YouCompleteMe#mac-os-x
