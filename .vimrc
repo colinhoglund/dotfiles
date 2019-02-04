@@ -16,8 +16,8 @@ Plugin 'VundleVim/Vundle.vim'
 " Custom vim bundles
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'fatih/vim-go'
-Plugin 'fatih/vim-hclfmt'
 Plugin 'godlygeek/tabular'
+Plugin 'hashivim/vim-terraform'
 Plugin 'kien/ctrlp.vim'
 Plugin 'nsf/gocode', {'rtp': 'vim/'}
 Plugin 'pearofducks/ansible-vim'
@@ -104,3 +104,5 @@ let g:syntastic_python_flake8_args = '--ignore=E501'
 
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_python_binary_path = 'python'
+
+let g:terraform_fmt_on_save=1
