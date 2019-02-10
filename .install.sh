@@ -31,6 +31,7 @@ global_python_pkgs='
   pep8
   pip
   pylint
+  pyls
   setuptools
   virtualenv
 '
