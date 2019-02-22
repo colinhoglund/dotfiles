@@ -55,7 +55,7 @@ alias tlist='tmux list-sessions'              # list tmux sessions
 
 # functions
 awsprofile() {
-  [ -z "$1" ] && echo "Usage: awssession <AWS_PROFILE>"
+  [ -z "$1" ] && echo "Usage: awsprofile <AWS_PROFILE>" && return 1
   role_arn=$(aws configure get role_arn --profile "$1")
   if [ -n "$role_arn" ]; then
     # get a session since boto doesn't support profiles with role_arn
