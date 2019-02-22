@@ -31,7 +31,7 @@ global_python_pkgs='
   pep8
   pip
   pylint
-  pyls
+  python-language-server
   setuptools
   virtualenv
 '
@@ -61,7 +61,7 @@ which brew > /dev/null\
   || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew doctor
 brew update
-brew upgrade --all
+brew upgrade
 brew install $brew_pkgs
 
 # setup pyenv and global virtualenv
