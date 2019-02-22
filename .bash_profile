@@ -1,17 +1,20 @@
 #!/bin/bash
 
-# ignore source errors from shellcheck
-# shellcheck source=/dev/null
+brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## source bashrc ##
+# shellcheck source=/dev/null
 [ -f ~/.bashrc ] && source ~/.bashrc
+# shellcheck source=/dev/null
 [ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
 ## activate iTerm2 shell integration
+# shellcheck source=/dev/null
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
 ## activate bash completion ##
-[ -f "$(brew --prefix)/etc/bash_completion" ] && source "$(brew --prefix)/etc/bash_completion"
+# shellcheck source=/dev/null
+[ -f "${brew_prefix}/etc/bash_completion" ] && source "${brew_prefix}/etc/bash_completion"
 
 ## activate pyenv ##
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
