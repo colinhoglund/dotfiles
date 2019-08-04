@@ -9,6 +9,13 @@ brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 [ -f ~/.bash_prompt ] && source ~/.bash_prompt
 
 ## activate iTerm2 shell integration
+function iterm2_print_user_vars() {
+  iterm2_set_user_var awsProfile "$AWS_PROFILE"
+  # slow but can't find a better solution :(
+  iterm2_set_user_var pythonVirtualenv "$(pyenv version-name)"
+  # this command is kind of ugly, but faster than multiple kubectl calls
+  iterm2_set_user_var kubeContext "$(kubectl config get-contexts | grep '^\*' | awk '{print $2" : "$5}')"
+}
 # shellcheck source=/dev/null
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 

@@ -78,13 +78,13 @@ _get_color_blocks() {
 
 # Set the full bash prompt.
 _get_bash_prompt() {
-  PS1=''
+  PS1=' '
 
   # add a space after blocks
-  blocks=$(_get_color_blocks) && [ -n "$blocks" ] && PS1="$blocks\\n"
+  #blocks=$(_get_color_blocks) && [ -n "$blocks" ] && PS1="$blocks\\n"
 
   # add a space after python venv
-  py=$(_get_virtualenv) && [ -n "$py" ] && PS1="${PS1}${py} "
+  #py=$(_get_virtualenv) && [ -n "$py" ] && PS1="${PS1}${py} "
 
   # add a space after git details
   if command -v git &>/dev/null && git rev-parse --git-dir &>/dev/null; then
