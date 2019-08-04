@@ -90,5 +90,8 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'go': ['gofmt', 'goimports'],
+\   'python': ['black'],
+\   'yaml': ['prettier'],
 \   'terraform': ['terraform'],
+\   'json': ['jq'],
 \}
