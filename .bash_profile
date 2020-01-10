@@ -10,7 +10,11 @@ brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## activate iTerm2 shell integration
 function iterm2_print_user_vars() {
-  iterm2_set_user_var awsProfile "$AWS_PROFILE"
+  if [ -n "$AWS_OKTA_PROFILE" ]; then
+    iterm2_set_user_var awsProfile "$AWS_OKTA_PROFILE"
+  else
+    iterm2_set_user_var awsProfile "$AWS_PROFILE"
+  fi
   # slow but can't find a better solution :(
   iterm2_set_user_var pythonVirtualenv "$(pyenv version-name)"
   # this command is kind of ugly, but faster than multiple kubectl calls
@@ -47,6 +51,7 @@ alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 alias .6='cd ../../../../../../'
+alias diff='diff -W 250 -y'
 
 # application aliases
 # alias brew to avoid pyenv config warnings https://github.com/pyenv/pyenv/issues/106
@@ -62,26 +67,12 @@ alias tlist='tmux list-sessions'              # list tmux sessions
 
 # functions
 awsprofile() {
+  unset AWS_PROFILE AWS_ACCESS_KEY_ID AWS_OKTA_PROFILE AWS_SECRET_ACCESS_KEY AWS_SECURITY_TOKEN AWS_SESSION_TOKEN
   [ -z "$1" ] && echo "Usage: awsprofile <AWS_PROFILE>" && return 1
-  role_arn=$(aws configure get role_arn --profile "$1")
-  if [ -n "$role_arn" ]; then
-    # get a session since boto doesn't support profiles with role_arn
-    session=$(aws sts assume-role --profile "$1" --role-arn "$role_arn" --role-session-name "aws_${1}_session")
-    AWS_PROFILE="$1"
-    AWS_ACCESS_KEY_ID="$(jq -rc '.Credentials.AccessKeyId' <<< "$session")"
-    AWS_SECRET_ACCESS_KEY="$(jq -rc '.Credentials.SecretAccessKey' <<< "$session")"
-    AWS_SESSION_TOKEN="$(jq -c '.Credentials.SessionToken' <<< "$session")"
-    AWS_SECURITY_TOKEN="$(jq -c '.Credentials.SessionToken' <<< "$session")"
-    export AWS_ACCESS_KEY_ID
-    export AWS_SECRET_ACCESS_KEY
-    export AWS_SESSION_TOKEN
-    export AWS_SECURITY_TOKEN
-    export AWS_PROFILE
-  else
-    unset AWS_ACCESS_KEY_ID
-    unset AWS_SECRET_ACCESS_KEY
-    unset AWS_SESSION_TOKEN
-    unset AWS_SECURITY_TOKEN
+
+  if [ -z "$(aws configure get role_arn --profile "$1")" ]; then
     export AWS_PROFILE="$1"
+  else
+    eval "$(aws-okta env "$1")"
   fi
 }
