@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## source bashrc ##
@@ -51,12 +53,13 @@ alias .3='cd ../../../'
 alias .4='cd ../../../../'
 alias .5='cd ../../../../../'
 alias .6='cd ../../../../../../'
-alias diff='diff -W 250 -y'
+alias diff='diff -y'
 
 # application aliases
 # alias brew to avoid pyenv config warnings https://github.com/pyenv/pyenv/issues/106
 alias brew='env PATH=${PATH//$(pyenv root)\/shims:/} brew'
 alias cssh='i2cssh'                           # cluster ssh
+alias git-nossl='git -c http.sslVerify=false'
 alias glog='git log --pretty=oneline --graph' # pretty git log graph
 alias date='gdate'                            # gnu date
 alias sed='gsed'                              # gnu sed
