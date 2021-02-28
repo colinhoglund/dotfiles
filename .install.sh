@@ -79,8 +79,3 @@ if which pyenv-virtualenv-init > /dev/null; then
   pyenv activate global
   [ "$(basename $PYENV_VIRTUAL_ENV)" == 'global' ] && pip install --upgrade $global_python_pkgs
 fi
-
-# install cluster ssh
-gem list | grep i2cssh &> /dev/null\
-  && warn_installed i2cssh\
-  || sudo gem install i2cssh
