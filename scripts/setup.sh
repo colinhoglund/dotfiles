@@ -85,7 +85,7 @@ iterm() {
   if [ -d /Applications/iTerm.app/ ]; then
     warn_installed iTerm
   else
-    iterm_url=$(curl -s https://www.iterm2.com/downloads.html\
+    iterm_url=$(curl -s https://iterm2.com/downloads.html\
                 | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
                 | head -1)
     iterm_zipfile=$(basename "$iterm_url")
