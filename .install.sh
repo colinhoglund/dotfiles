@@ -46,6 +46,8 @@ warn_installed() {
 
 ######## Tasks ########
 
+chsh -s /bin/bash
+
 # setup pyenv and deactivate virtualenv before running brew
 if which pyenv-virtualenv-init > /dev/null; then
   eval "$(pyenv init -)"
