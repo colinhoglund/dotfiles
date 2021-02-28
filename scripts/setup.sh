@@ -35,6 +35,7 @@ git_config() {
     git config --global "$key" "$val"
   done
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
+  git config --global pull.rebase false
 }
 
 vim_config() {
