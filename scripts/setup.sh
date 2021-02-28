@@ -6,6 +6,7 @@ links='
   .ipython
   .slate
   .vimrc
+  com.googlecode.iterm2.plist
 '
 
 git_config() {
