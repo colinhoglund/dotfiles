@@ -37,6 +37,9 @@ git_config() {
   done
   git config --global alias.up "!f() { git pull && git submodule update --init --recursive; }; f"
   git config --global pull.rebase false
+
+  # alias https to ssh so Golang private repos that bypass GOPROXY work properly
+  git config --global url."git@github.com:".insteadOf "https://github.com/"
 }
 
 vim_config() {
