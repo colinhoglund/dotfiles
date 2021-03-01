@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 )
 
@@ -55,10 +54,13 @@ func main() {
 	}
 
 	for _, f := range remoteFiles {
-		switch err := getBinary(f.URL, f.ArchiveSource, f.Destination); {
-		case errors.Is(err, os.ErrExist):
-			fmt.Println("file already exists:", filepath.Base(f.URL))
-		case err != nil:
+		if _, err := os.Stat(f.Destination); err == nil {
+			fmt.Println("file already exists:", f.Destination)
+			continue
+		}
+
+		fmt.Println("downloading", f.URL)
+		if err := getBinary(f.URL, f.ArchiveSource, f.Destination); err != nil {
 			panic(err)
 		}
 	}
