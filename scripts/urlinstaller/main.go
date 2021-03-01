@@ -51,6 +51,9 @@ func main() {
 		//{
 		//	URL: "https://dl.google.com/go/go1.16.darwin-amd64.pkg",
 		//},
+		//{
+		//	URL: "https://desktop.docker.com/mac/stable/Docker.dmg",
+		//},
 	}
 
 	for _, f := range remoteFiles {
@@ -86,6 +89,12 @@ func getBinary(url, archivedFilename, filename string) error {
 		if err := getPkg(resp.Body); err != nil {
 			return err
 		}
+	case strings.HasSuffix(url, ".dmg"):
+		// TODO:
+		//hdiutil attach -nobrowse /tmp/googlechrome.dmg
+		//sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
+		//umount /Volumes/Google\ Chrome/
+		//rm -f /tmp/googlechrome.dmg
 	default:
 		if err := copyFileIfNotExists(resp.Body, filename, 0755); err != nil {
 			return err
