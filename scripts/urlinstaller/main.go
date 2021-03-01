@@ -214,18 +214,5 @@ func copyToTempFile(reader io.Reader) (string, error) {
 		return "", err
 	}
 
-	cf, err := os.Create("/tmp/colin")
-	if err != nil {
-		return "", err
-	}
-
-	if _, err = io.Copy(cf, reader); err != nil {
-		return "", err
-	}
-
-	if err := cf.Close(); err != nil {
-		return "", err
-	}
-
 	return f.Name(), nil
 }
