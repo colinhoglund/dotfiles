@@ -1,5 +1,9 @@
-module dotfiles
+module github.com/colinhoglund/dotfiles
 
 go 1.16
 
-require sigs.k8s.io/yaml v1.2.0
+require (
+	github.com/spf13/cobra v1.1.3
+	github.com/spf13/viper v1.7.1
+	sigs.k8s.io/yaml v1.2.0
+)

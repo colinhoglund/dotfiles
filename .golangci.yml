@@ -1,0 +1,7 @@
+---
+linters:
+  disable:
+    - testpackage
+    - gomnd
+    - exhaustivestruct
+    - wrapcheck
