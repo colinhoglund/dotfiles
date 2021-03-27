@@ -11,54 +11,35 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"sigs.k8s.io/yaml"
 )
 
 type remoteFile struct {
-	URL           string
-	Destination   string
-	ArchiveSource string
+	URL           string `json:"url"`
+	Destination   string `json:"destination"`
+	ArchiveSource string `json:"archiveSource"`
+}
+
+type config struct {
+	RemoteFiles []remoteFile `json:"remoteFiles"`
 }
 
 func main() {
-	remoteFiles := []remoteFile{
-		{
-			URL:         "https://dl.k8s.io/release/v1.20.0/bin/darwin/amd64/kubectl",
-			Destination: "/usr/local/bin/kubectl",
-		},
-		{
-			URL:         "https://github.com/kubernetes/kops/releases/download/v1.18.2/kops-darwin-amd64",
-			Destination: "/usr/local/bin/kops",
-		},
-		{
-			URL:         "https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64",
-			Destination: "/usr/local/bin/minikube",
-		},
-		{
-			URL:           "https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_darwin_amd64.zip",
-			Destination:   "/usr/local/bin/terraform",
-			ArchiveSource: "terraform",
-		},
-		{
-			URL:           "https://get.helm.sh/helm-v3.5.2-darwin-amd64.tar.gz",
-			Destination:   "/usr/local/bin/helm",
-			ArchiveSource: "darwin-amd64/helm",
-		},
-		{
-			URL:           "https://github.com/Eneco/landscaper/releases/download/v1.0.23/landscaper-1.0.23-darwin-amd64.tar.gz",
-			Destination:   "/usr/local/bin/landscaper",
-			ArchiveSource: "landscaper",
-		},
-		//{
-		//	URL: "https://dl.google.com/go/go1.16.darwin-amd64.pkg",
-		//},
-		//{
-		//	URL: "https://desktop.docker.com/mac/stable/Docker.dmg",
-		//},
+	fileBytes, err := os.ReadFile(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	for _, f := range remoteFiles {
+	c := &config{}
+	if err := yaml.Unmarshal(fileBytes, c); err != nil {
+		log.Fatal(err)
+	}
+
+	for _, f := range c.RemoteFiles {
 		if _, err := os.Stat(f.Destination); err == nil {
 			log.Println("file already exists:", f.Destination)
+
 			continue
 		}
 
