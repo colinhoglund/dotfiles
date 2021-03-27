@@ -5,8 +5,8 @@ import (
 	"archive/zip"
 	"compress/gzip"
 	"errors"
-	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"os/exec"
@@ -58,18 +58,18 @@ func main() {
 
 	for _, f := range remoteFiles {
 		if _, err := os.Stat(f.Destination); err == nil {
-			fmt.Println("file already exists:", f.Destination)
+			log.Println("file already exists:", f.Destination)
 			continue
 		}
 
-		fmt.Println("downloading", f.URL)
 		if err := getBinary(f.URL, f.ArchiveSource, f.Destination); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}
 }
 
 func getBinary(url, archivedFilename, filename string) error {
+	log.Println("downloading:", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -78,14 +78,17 @@ func getBinary(url, archivedFilename, filename string) error {
 
 	switch {
 	case strings.HasSuffix(url, ".zip"):
+		log.Println("unpacking zip archive:", url)
 		if err := getZip(resp.Body, archivedFilename, filename); err != nil {
 			return err
 		}
 	case strings.HasSuffix(url, ".tar.gz"):
+		log.Println("unpacking tar.gz archive:", url)
 		if err := getTar(resp.Body, archivedFilename, filename); err != nil {
 			return err
 		}
 	case strings.HasSuffix(url, ".pkg"):
+		log.Println("installing pkg:", url)
 		if err := getPkg(resp.Body); err != nil {
 			return err
 		}
@@ -186,7 +189,13 @@ func getPkg(reader io.Reader) error {
 	}
 	defer os.Remove(tempfile)
 
-	cmd := exec.Command("sudo", "installer", "-pkg", tempfile, "-target", "/")
+	pkgName := tempfile + ".pkg"
+
+	if err := os.Rename(tempfile, pkgName); err != nil {
+		return err
+	}
+
+	cmd := exec.Command("sudo", "installer", "-pkg", pkgName, "-target", "/")
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -199,6 +208,7 @@ func getPkg(reader io.Reader) error {
 }
 
 func copyFileIfNotExists(reader io.Reader, filename string, mode os.FileMode) error {
+	log.Println("copying executable:", filename)
 	file, err := os.OpenFile(filename, os.O_CREATE|os.O_EXCL|os.O_WRONLY, mode)
 	if err != nil {
 		return err
