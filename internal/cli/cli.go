@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"archive/tar"
@@ -9,34 +9,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/exec"
 	"strings"
 
-	"sigs.k8s.io/yaml"
+	"github.com/colinhoglund/dotfiles/internal/config"
 )
 
-type remoteFile struct {
-	URL           string `json:"url"`
-	Destination   string `json:"destination"`
-	ArchiveSource string `json:"archiveSource"`
-}
-
-type config struct {
-	RemoteFiles []remoteFile `json:"remoteFiles"`
-}
-
-func main() {
-	fileBytes, err := os.ReadFile(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	c := &config{}
-	if err := yaml.Unmarshal(fileBytes, c); err != nil {
-		log.Fatal(err)
-	}
-
-	for _, f := range c.RemoteFiles {
+func InstallRemoteFiles(rFiles []config.RemoteFile) error {
+	for _, f := range rFiles {
 		if _, err := os.Stat(f.Destination); err == nil {
 			log.Println("file already exists:", f.Destination)
 
@@ -47,10 +26,13 @@ func main() {
 			log.Fatal(err)
 		}
 	}
+
+	return nil
 }
 
 func getBinary(url, archivedFilename, filename string) error {
 	log.Println("downloading:", url)
+
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
@@ -60,25 +42,28 @@ func getBinary(url, archivedFilename, filename string) error {
 	switch {
 	case strings.HasSuffix(url, ".zip"):
 		log.Println("unpacking zip archive:", url)
+
 		if err := getZip(resp.Body, archivedFilename, filename); err != nil {
 			return err
 		}
 	case strings.HasSuffix(url, ".tar.gz"):
 		log.Println("unpacking tar.gz archive:", url)
+
 		if err := getTar(resp.Body, archivedFilename, filename); err != nil {
 			return err
 		}
 	case strings.HasSuffix(url, ".pkg"):
 		log.Println("installing pkg:", url)
+
 		if err := getPkg(resp.Body); err != nil {
 			return err
 		}
 	case strings.HasSuffix(url, ".dmg"):
 		// TODO:
-		//hdiutil attach -nobrowse /tmp/googlechrome.dmg
-		//sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
-		//umount /Volumes/Google\ Chrome/
-		//rm -f /tmp/googlechrome.dmg
+		// hdiutil attach -nobrowse /tmp/googlechrome.dmg
+		// sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
+		// umount /Volumes/Google\ Chrome/
+		// rm -f /tmp/googlechrome.dmg
 	default:
 		if err := copyFileIfNotExists(resp.Body, filename, 0755); err != nil {
 			return err
@@ -176,20 +161,12 @@ func getPkg(reader io.Reader) error {
 		return err
 	}
 
-	cmd := exec.Command("sudo", "installer", "-pkg", pkgName, "-target", "/")
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	if err := cmd.Run(); err != nil {
-		return err
-	}
-
-	return nil
+	return execCmd("sudo", "installer", "-pkg", pkgName, "-target", "/").Run()
 }
 
 func copyFileIfNotExists(reader io.Reader, filename string, mode os.FileMode) error {
 	log.Println("copying executable:", filename)
+
 	file, err := os.OpenFile(filename, os.O_CREATE|os.O_EXCL|os.O_WRONLY, mode)
 	if err != nil {
 		return err
