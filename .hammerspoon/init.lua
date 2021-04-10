@@ -1,15 +1,16 @@
-require "position"
+local pos = require("position")
 
 hs.hotkey.alertDuration = 0
 hs.hints.showTitleThresh = 0
 hs.window.animationDuration = 0
 
-hs.hotkey.bind({"shift", "alt"}, "k", position.full)
-hs.hotkey.bind({"shift", "alt"}, "j", position.left)
-hs.hotkey.bind({"shift", "alt"}, "l", position.right)
-hs.hotkey.bind({"shift", "alt"}, "i", position.top)
-hs.hotkey.bind({"shift", "alt"}, ",", position.bottom)
-hs.hotkey.bind({"shift", "alt"}, "u", position.topLeft)
-hs.hotkey.bind({"shift", "alt"}, "o", position.topRight)
-hs.hotkey.bind({"shift", "alt"}, "m", position.bottomLeft)
-hs.hotkey.bind({"shift", "alt"}, ".", position.bottomRight)
+hs.hotkey.bind({"shift", "alt"}, "n", pos.nextScreen)
+hs.hotkey.bind({"shift", "alt"}, "k", pos.full)
+hs.hotkey.bind({"shift", "alt"}, "j", pos.left)
+hs.hotkey.bind({"shift", "alt"}, "l", pos.right)
+hs.hotkey.bind({"shift", "alt"}, "i", pos.top)
+hs.hotkey.bind({"shift", "alt"}, ",", pos.bottom)
+hs.hotkey.bind({"shift", "alt"}, "u", pos.topLeft)
+hs.hotkey.bind({"shift", "alt"}, "o", pos.topRight)
+hs.hotkey.bind({"shift", "alt"}, "m", pos.bottomLeft)
+hs.hotkey.bind({"shift", "alt"}, ".", pos.bottomRight)

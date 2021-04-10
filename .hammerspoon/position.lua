@@ -1,6 +1,6 @@
-position = {}
+this = {}
 
-function position.set(x, y, w, h)
+function this.set(x, y, w, h)
     local win = hs.window.focusedWindow()
     local f = win:frame()
 
@@ -12,47 +12,53 @@ function position.set(x, y, w, h)
     win:setFrame(f)
 end
 
-function position.full()
-    local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x, max.y, max.w, max.h)
+function this.nextScreen()
+    hs.window.focusedWindow():moveOneScreenEast()
 end
 
-function position.left()
+function this.full()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x, max.y, max.w / 2, max.h)
+    this.set(max.x, max.y, max.w, max.h)
 end
 
-function position.right()
+function this.left()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x + (max.w / 2), max.y, max.w / 2, max.h)
+    this.set(max.x, max.y, max.w / 2, max.h)
 end
 
-function position.top()
+function this.right()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x, max.y, max.w, max.h / 2)
+    this.set(max.x + (max.w / 2), max.y, max.w / 2, max.h)
 end
 
-function position.bottom()
+function this.top()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x, max.y + (max.h / 2), max.w, max.h / 2)
+    this.set(max.x, max.y, max.w, max.h / 2)
 end
 
-function position.topLeft()
+function this.bottom()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x / 2, max.y / 2, max.w / 2, max.h / 2)
+    this.set(max.x, max.y + (max.h / 2), max.w, max.h / 2)
 end
 
-function position.topRight()
+function this.topLeft()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x + (max.w / 2), max.y / 2, max.w / 2, max.h / 2)
+    this.set(max.x / 2, max.y / 2, max.w / 2, max.h / 2)
 end
 
-function position.bottomLeft()
+function this.topRight()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x / 2, max.y + (max.h / 2), max.w / 2, max.h / 2)
+    this.set(max.x + (max.w / 2), max.y / 2, max.w / 2, max.h / 2)
 end
 
-function position.bottomRight()
+function this.bottomLeft()
     local max = hs.window.focusedWindow():screen():frame()
-    position.set(max.x + (max.w / 2), max.y + (max.h / 2), max.w / 2, max.h / 2)
+    this.set(max.x / 2, max.y + (max.h / 2), max.w / 2, max.h / 2)
 end
+
+function this.bottomRight()
+    local max = hs.window.focusedWindow():screen():frame()
+    this.set(max.x + (max.w / 2), max.y + (max.h / 2), max.w / 2, max.h / 2)
+end
+
+return this
