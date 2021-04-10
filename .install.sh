@@ -4,26 +4,6 @@
 
 python_version='3.7.4'
 
-brew_pkgs='
-  bash-completion
-  coreutils
-  git
-  gnu-sed
-  gnu-tar
-  httpie
-  jq
-  nmap
-  pyenv-virtualenv
-  python
-  readline
-  ssh-copy-id
-  the_silver_searcher
-  tree
-  tmux
-  watch
-  wget
-'
-
 global_python_pkgs='
   awscli
   flake8
@@ -47,24 +27,6 @@ warn_installed() {
 ######## Tasks ########
 
 chsh -s /bin/bash
-
-# setup pyenv and deactivate virtualenv before running brew
-if which pyenv-virtualenv-init > /dev/null; then
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
-  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-  pyenv global system
-  pyenv deactivate
-fi
-
-# install homebrew and packages
-which brew > /dev/null\
-  && warn_installed brew\
-  || ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew doctor
-brew update
-brew upgrade
-brew install $brew_pkgs
 
 # setup pyenv and global virtualenv
 if which pyenv-virtualenv-init > /dev/null; then

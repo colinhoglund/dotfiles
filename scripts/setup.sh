@@ -43,8 +43,6 @@ git_config() {
 }
 
 vim_config() {
-  brew install vim
-
   # create vi alias
   [ -f /usr/local/bin/vim ] && ln -fs /usr/local/bin/vim /usr/local/bin/vi
 
