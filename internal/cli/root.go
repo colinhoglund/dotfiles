@@ -37,7 +37,7 @@ func runE(cmd *cobra.Command, args []string) error {
 
 	log.Println("installing remote files")
 
-	if err := InstallRemoteFiles(conf.RemoteFiles); err != nil {
+	if err := InstallRemoteFiles(conf.RemoteFiles...); err != nil {
 		return err
 	}
 

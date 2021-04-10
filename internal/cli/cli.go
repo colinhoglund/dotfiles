@@ -14,7 +14,7 @@ import (
 	"github.com/colinhoglund/dotfiles/internal/config"
 )
 
-func InstallRemoteFiles(rFiles []config.RemoteFile) error {
+func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 	for _, f := range rFiles {
 		if _, err := os.Stat(f.Destination); err == nil {
 			log.Println("file already exists:", f.Destination)
@@ -157,6 +157,7 @@ func getPkg(reader io.Reader) error {
 
 	pkgName := tempfile + ".pkg"
 
+	// file must have a .pkg file extension
 	if err := os.Rename(tempfile, pkgName); err != nil {
 		return err
 	}
