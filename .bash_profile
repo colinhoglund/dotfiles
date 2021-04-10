@@ -12,11 +12,7 @@ brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## activate iTerm2 shell integration
 function iterm2_print_user_vars() {
-  if [ -n "$AWS_OKTA_PROFILE" ]; then
-    iterm2_set_user_var awsProfile "$AWS_OKTA_PROFILE"
-  else
-    iterm2_set_user_var awsProfile "$AWS_PROFILE"
-  fi
+  iterm2_set_user_var awsProfile "$AWS_ACCOUNT"
   # slow but can't find a better solution :(
   iterm2_set_user_var pythonVirtualenv "$(pyenv version-name)"
   # this command is kind of ugly, but faster than multiple kubectl calls
@@ -67,15 +63,3 @@ alias itmux='tmux -CC'                        # tmux w/ iTerm integration
 alias tkill='tmux kill-session'               # kill tmux session
 alias tlist='tmux list-sessions'              # list tmux sessions
 alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
-
-# functions
-awsprofile() {
-  unset AWS_PROFILE AWS_ACCESS_KEY_ID AWS_OKTA_PROFILE AWS_SECRET_ACCESS_KEY AWS_SECURITY_TOKEN AWS_SESSION_TOKEN
-  [ -z "$1" ] && echo "Usage: awsprofile <AWS_PROFILE>" && return 1
-
-  if [ -z "$(aws configure get role_arn --profile "$1")" ]; then
-    export AWS_PROFILE="$1"
-  else
-    eval "$(aws-okta env "$1")"
-  fi
-}
