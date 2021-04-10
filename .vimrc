@@ -95,4 +95,5 @@ let g:ale_fixers = {
 \   'yaml': ['prettier'],
 \   'terraform': ['terraform'],
 \   'json': ['jq'],
+\   'lua': ['luafmt'],
 \}
