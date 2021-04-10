@@ -12,7 +12,7 @@ brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## activate iTerm2 shell integration
 function iterm2_print_user_vars() {
-  iterm2_set_user_var awsProfile "$AWS_PROFILE"
+  iterm2_set_user_var awsProfile "$AWS_ACCOUNT"
   # slow but can't find a better solution :(
   iterm2_set_user_var pythonVirtualenv "$(pyenv version-name)"
   # this command is kind of ugly, but faster than multiple kubectl calls
@@ -63,19 +63,3 @@ alias itmux='tmux -CC'                        # tmux w/ iTerm integration
 alias tkill='tmux kill-session'               # kill tmux session
 alias tlist='tmux list-sessions'              # list tmux sessions
 alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
-
-# functions
-awsprofile() {
-  unset AWS_PROFILE AWS_ACCESS_KEY AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
-  export AWS_PROFILE="$1"
-  eval "$(aws sts assume-role --profile sso \
-    --role-session-name "$(whoami)" \
-    --role-arn "$(aws configure get role_arn --profile "$1")" \
-    | jq -r '.Credentials |"
-      export AWS_ACCESS_KEY=\(.AccessKeyId)
-      export AWS_ACCESS_KEY_ID=\(.AccessKeyId)
-      export AWS_SECRET_ACCESS_KEY=\(.SecretAccessKey)
-      export AWS_SESSION_TOKEN=\(.SessionToken)"
-    '
-  )"
-}
