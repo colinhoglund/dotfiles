@@ -1,9 +1,14 @@
 package config
 
+import (
+	"os"
+
+	"sigs.k8s.io/yaml"
+)
+
 type (
 	Config struct {
-		BrewPackages []string     `json:"brewPackages"`
-		RemoteFiles  []RemoteFile `json:"remoteFiles"`
+		RemoteFiles []RemoteFile `json:"remoteFiles"`
 	}
 
 	RemoteFile struct {
@@ -13,6 +18,16 @@ type (
 	}
 )
 
-func New() Config {
-	return Config{}
+func New(file string) (*Config, error) {
+	fileBytes, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+
+	conf := &Config{}
+	if err := yaml.Unmarshal(fileBytes, &conf); err != nil {
+		return nil, err
+	}
+
+	return conf, nil
 }

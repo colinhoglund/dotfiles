@@ -8,7 +8,6 @@ import (
 	"github.com/colinhoglund/dotfiles/internal/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"sigs.k8s.io/yaml"
 )
 
 func New() *cobra.Command {
@@ -25,13 +24,8 @@ func New() *cobra.Command {
 }
 
 func runE(cmd *cobra.Command, args []string) error {
-	fileBytes, err := os.ReadFile(viper.GetString("config-file"))
+	conf, err := config.New(viper.GetString("config-file"))
 	if err != nil {
-		return err
-	}
-
-	conf := config.New()
-	if err := yaml.Unmarshal(fileBytes, &conf); err != nil {
 		return err
 	}
 
