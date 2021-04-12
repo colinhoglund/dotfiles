@@ -16,6 +16,10 @@ function this.nextScreen()
     hs.window.focusedWindow():moveOneScreenEast()
 end
 
+function this.previousScreen()
+    hs.window.focusedWindow():moveOneScreenWest()
+end
+
 function this.full()
     local max = hs.window.focusedWindow():screen():frame()
     this.set(max.x, max.y, max.w, max.h)
