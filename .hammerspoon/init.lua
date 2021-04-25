@@ -5,6 +5,7 @@ hs.hints.showTitleThresh = 0
 hs.window.animationDuration = 0
 
 hs.hotkey.bind({"shift", "alt"}, "n", pos.nextScreen)
+hs.hotkey.bind({"shift", "alt"}, "p", pos.previousScreen)
 hs.hotkey.bind({"shift", "alt"}, "k", pos.full)
 hs.hotkey.bind({"shift", "alt"}, "j", pos.left)
 hs.hotkey.bind({"shift", "alt"}, "l", pos.right)
