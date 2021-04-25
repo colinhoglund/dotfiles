@@ -15,5 +15,4 @@ remoteFiles:
   - url: https://github.com/Eneco/landscaper/releases/download/v1.0.23/landscaper-1.0.23-darwin-amd64.tar.gz
     destination: /usr/local/bin/landscaper
     archiveSource: landscaper
-  - url: https://dl.google.com/go/go1.16.darwin-amd64.pkg
   - url: https://desktop.docker.com/mac/stable/Docker.dmg
