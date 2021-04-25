@@ -4,7 +4,7 @@ links='
   .bash_profile
   .bash_prompt
   .ipython
-  .slate
+  .hammerspoon
   .vimrc
   com.googlecode.iterm2.plist
 '
@@ -126,33 +126,13 @@ slack() {
   fi
 }
 
-slate() {
-  if [ -d /Applications/Slate.app ]; then
-    warn_installed Slate
-  else
-    curl -s http://www.ninjamonkeysoftware.com/slate/versions/slate-latest.tar.gz | tar -xz -C /Applications/
-    # enable assistive devices
-    os_x_version=$(sw_vers | grep ProductVersion | awk '{print $2}' | cut -d. -f1,2)
-    slate_plist=$(/usr/libexec/PlistBuddy -c 'Print CFBundleIdentifier' /Applications/Slate.app/Contents/Info.plist)
-    case "$os_x_version" in
-      10.11)
-        slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL,NULL);"
-        ;;
-      10.10)
-        slate_sql="INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','$slate_plist',0,1,1,NULL);"
-        ;;
-    esac
-    [ -n "$slate_sql" ] && sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "$slate_sql"
-  fi
-}
-
 warn_installed() {
   warn_text="$(tput smul; tput setaf 3)Warning$(tput rmul; tput sgr 0):"
   echo "${warn_text} $1 already exists"
 }
 
 usage() {
-    echo "Usage: $0 <link|unlink|git|vim|iterm|chrome|slack|slate>"
+    echo "Usage: $0 <link|unlink|git|vim|iterm|chrome|slack>"
 }
 
 main() {
@@ -163,7 +143,6 @@ main() {
     slack) slack;;
     git) git_config;;
     iterm) iterm;;
-    slate) slate;;
     link) link;;
     unlink) unlink;;
     vim) vim_config;;
