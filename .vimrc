@@ -84,6 +84,9 @@ command GD Gdiff
 
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
+" Disable --enable-all flag
+" (https://github.com/dense-analysis/ale/issues/3670)
+let g:ale_go_golangci_lint_options = ''
 let g:ale_linters = {
 \   'python': ['flake8', 'pyls'],
 \   'go': ['golangci-lint', 'gopls'],
