@@ -82,6 +82,9 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 command GB Gblame
 command GD Gdiff
 
+" set filetype to python for drone starlark pipelines
+au BufRead,BufNewFile *.star set filetype=python
+
 let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
 " Disable --enable-all flag
@@ -89,13 +92,12 @@ let g:ale_fix_on_save = 1
 let g:ale_go_golangci_lint_options = ''
 let g:ale_linters = {
 \   'python': ['flake8', 'pyls'],
-\   'go': ['golangci-lint', 'gopls'],
+\   'go': ['gopls'],
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'go': ['gofmt', 'goimports'],
 \   'python': ['black'],
-\   'yaml': ['prettier'],
 \   'terraform': ['terraform'],
 \   'json': ['jq'],
 \   'lua': ['luafmt'],

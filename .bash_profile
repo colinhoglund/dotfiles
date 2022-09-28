@@ -62,4 +62,4 @@ alias dd='gdd'                                # gnu dd
 alias itmux='tmux -CC'                        # tmux w/ iTerm integration
 alias tkill='tmux kill-session'               # kill tmux session
 alias tlist='tmux list-sessions'              # list tmux sessions
-alias gocov='go test -coverprofile=coverage.out && go tool cover -html=coverage.out'
+alias gocov='go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out'
