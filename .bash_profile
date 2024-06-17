@@ -2,6 +2,7 @@
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+eval $(/opt/homebrew/bin/brew shellenv)
 brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
 ## source bashrc ##

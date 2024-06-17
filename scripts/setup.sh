@@ -6,6 +6,7 @@ links='
   .ipython
   .hammerspoon
   .vimrc
+  .zshrc
   com.googlecode.iterm2.plist
 '
 

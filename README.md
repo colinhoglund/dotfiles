@@ -23,3 +23,12 @@ https://github.com/Valloric/YouCompleteMe#mac-os-x
 Optional Steps:
 - Load custom iTerm2 preferences:
   - Preferences -> General -> Load preferences from a custom folder or URL -> enter `~/`
+
+# Go Binary Installation Method
+
+WIP...
+
+```
+dotfiles -c config.yaml
+brew bundle
+```
