@@ -14,15 +14,17 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Custom vim bundles
+Plugin 'dense-analysis/ale'
+" Plugin 'fatih/vim-go'
 Plugin 'godlygeek/tabular'
 Plugin 'hashivim/vim-terraform'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'vim-airline/vim-airline'
-Plugin 'w0rp/ale'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -89,10 +91,10 @@ let g:ale_completion_enabled = 1
 let g:ale_fix_on_save = 1
 " Disable --enable-all flag
 " (https://github.com/dense-analysis/ale/issues/3670)
-let g:ale_go_golangci_lint_options = ''
 let g:ale_linters = {
 \   'python': ['flake8', 'pyls'],
 \   'go': ['gopls'],
+\   'lua': ['lua-language-server'],
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
