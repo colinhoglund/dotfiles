@@ -29,11 +29,11 @@ func runE(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	log.Println("running brew bundle")
+	//log.Println("running brew bundle")
 
-	if err := execCmd("brew", "bundle").Run(); err != nil {
-		return err
-	}
+	//if err := execCmd("brew", "bundle").Run(); err != nil {
+	//	return err
+	//}
 
 	log.Println("installing remote files")
 

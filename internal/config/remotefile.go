@@ -1,4 +1,4 @@
-package cli
+package config
 
 import (
 	"archive/tar"
@@ -10,24 +10,56 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/colinhoglund/dotfiles/internal/config"
 )
 
-func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
-	for _, f := range rFiles {
-		if f.Exists() {
-			log.Println("file already exists:", f.Destination)
-
-			continue
-		}
-
-		if err := getBinary(f.URL, f.ArchiveSource, f.Destination); err != nil {
-			log.Fatal(err)
-		}
+type (
+	// RemoteFile retrieves a remote file and either extracts its contents
+	// or copies a file. Only one of either Copy or Extract can be non-nil.
+	RemoteFile struct {
+		URL     string             `json:"url"`
+		Copy    *RemoteFileCopy    `json:"copy"`
+		Extract *RemoteFileExtract `json:"extract"`
 	}
 
-	return nil
+	RemoteFileCopy struct {
+		From string `json:"from"`
+		To   string `json:"to"`
+	}
+
+	RemoteFileExtract struct {
+		From string `json:"from"`
+		To   string `json:"to"`
+	}
+)
+
+func (r *RemoteFile) Destination() string {
+	switch {
+	case r.Copy != nil:
+		return r.Copy.To
+	case r.Extract != nil:
+		return r.Extract.To
+	}
+
+	return ""
+}
+
+func (r *RemoteFile) Exists() bool {
+	if _, err := os.Stat(r.Destination()); err == nil {
+		return true
+	}
+
+	return false
+}
+
+func (r *RemoteFile) Get() error {
+	switch {
+	case r.Copy != nil:
+		return getBinary(r.URL, r.Copy.From, r.Copy.To)
+	case r.Extract != nil:
+		return getBinary(r.URL, r.Extract.From, r.Extract.To)
+	}
+
+	return errors.New("must specify copy or extract configuration")
 }
 
 func getBinary(url, archivedFilename, filename string) error {

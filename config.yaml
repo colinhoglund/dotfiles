@@ -1,18 +1,19 @@
 ---
 remoteFiles:
+  - url: https://github.com/Homebrew/brew/archive/refs/tags/3.0.11.tar.gz
+    extract:
+      to: /usr/local
   - url: https://dl.k8s.io/release/v1.20.0/bin/darwin/amd64/kubectl
-    destination: /usr/local/bin/kubectl
+    copy:
+      to: /usr/local/bin/kubectl
   - url: https://github.com/kubernetes/kops/releases/download/v1.18.2/kops-darwin-amd64
-    destination: /usr/local/bin/kops
-  - url: https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64
-    destination: /usr/local/bin/minikube
+    copy:
+      to: /usr/local/bin/kops
   - url: https://releases.hashicorp.com/terraform/0.13.6/terraform_0.13.6_darwin_amd64.zip
-    destination: /usr/local/bin/terraform
-    archiveSource: terraform
+    copy:
+      from: terraform
+      to: /usr/local/bin/terraform
   - url: https://get.helm.sh/helm-v3.5.2-darwin-amd64.tar.gz
-    destination: /usr/local/bin/helm
-    archiveSource: darwin-amd64/helm
-  - url: https://github.com/Eneco/landscaper/releases/download/v1.0.23/landscaper-1.0.23-darwin-amd64.tar.gz
-    destination: /usr/local/bin/landscaper
-    archiveSource: landscaper
-  - url: https://desktop.docker.com/mac/stable/Docker.dmg
+    copy:
+      from: darwin-amd64/helm
+      to: /usr/local/bin/helm
