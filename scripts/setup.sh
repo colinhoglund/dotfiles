@@ -7,7 +7,6 @@ links='
   .hammerspoon
   .vimrc
   .zshrc
-  com.googlecode.iterm2.plist
 '
 
 git_config() {
