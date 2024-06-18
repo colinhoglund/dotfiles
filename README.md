@@ -25,4 +25,5 @@ https://github.com/Valloric/YouCompleteMe#mac-os-x
 
 Optional Steps:
 - Load custom iTerm2 preferences:
-  - Preferences -> General -> Load preferences from a custom folder or URL -> enter `~/`
+  - `cp com.googlecode.iterm2.plist ~/`
+  - Preferences -> General -> Settings -> Load preferences from a custom folder or URL -> enter `~/`
