@@ -20,9 +20,6 @@ Deactivate any existing python virtualenvs and run installers:
     make all
     . ~/.bash_profile
 
-youcompleteme will need to be compiled before it does anything
-https://github.com/ycm-core/YouCompleteMe#macos
-
 Optional Steps:
 - Load custom iTerm2 preferences:
   - `cp com.googlecode.iterm2.plist ~/`
