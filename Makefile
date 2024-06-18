@@ -1,5 +1,5 @@
 .PHONY: all
-all: shellcheck link git vim iterm chrome
+all: shellcheck link git vim iterm chrome godeps
 
 .PHONY: help
 help:
@@ -12,6 +12,11 @@ brew: ## Install brew packages
 .PHONY: shellcheck
 shellcheck: ## Linter for all shell scripts
 	shellcheck .bash_profile .bash_prompt ./scripts/setup.sh
+
+.PHONY: godeps
+godeps:
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install golang.org/x/tools/gopls@latest
 
 %:
 	./scripts/setup.sh $(@)
