@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"sigs.k8s.io/yaml"
 )
 
@@ -30,4 +31,8 @@ func New(file string) (*Config, error) {
 	}
 
 	return conf, nil
+}
+
+func (r RemoteFile) ExpandDestination() (string, error) {
+	return homedir.Expand(r.Destination)
 }

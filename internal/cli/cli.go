@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/colinhoglund/dotfiles/internal/config"
@@ -16,13 +17,22 @@ import (
 
 func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 	for _, f := range rFiles {
-		if _, err := os.Stat(f.Destination); err == nil {
-			log.Println("file already exists:", f.Destination)
+		dest, err := f.ExpandDestination()
+		if err != nil {
+			return err
+		}
+
+		if err := os.MkdirAll(filepath.Dir(dest), 0750); err != nil {
+			return err
+		}
+
+		if _, err := os.Stat(dest); err == nil {
+			log.Println("file already exists:", dest)
 
 			continue
 		}
 
-		if err := getBinary(f.URL, f.ArchiveSource, f.Destination); err != nil {
+		if err := getBinary(f.URL, f.ArchiveSource, dest); err != nil {
 			log.Fatal(err)
 		}
 	}

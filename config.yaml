@@ -1,6 +1,9 @@
 ---
 remoteFiles:
   - url: https://github.com/Homebrew/brew/releases/download/4.3.6/Homebrew-4.3.6.pkg
+    destination: /opt/homebrew/bin/brew
+  - url: https://dl.k8s.io/release/v1.30.2/bin/darwin/arm64/kubectl
+    destination: ~/bin/kubectl
 #  - url: https://dl.k8s.io/release/v1.20.0/bin/darwin/amd64/kubectl
 #    destination: /usr/local/bin/kubectl
 #  - url: https://github.com/kubernetes/kops/releases/download/v1.18.2/kops-darwin-amd64
