@@ -44,9 +44,6 @@ git_config() {
 }
 
 vim_config() {
-  # create vi alias
-  [ -f /usr/local/bin/vim ] && ln -fs /usr/local/bin/vim /usr/local/bin/vi
-
   # install molokai color scheme
   mkdir -p ~/.vim/colors
   if [ -f ~/.vim/colors/molokai.vim ]; then
@@ -62,7 +59,7 @@ vim_config() {
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
   fi
 
-  /usr/local/bin/vim +PluginInstall +qall
+  vim +PluginInstall +qall
 }
 
 link() {
