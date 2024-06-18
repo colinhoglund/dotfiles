@@ -2,7 +2,7 @@
 
 ######## Variables ########
 
-python_version='3.7.4'
+python_version='3.12.4'
 
 global_python_pkgs='
   awscli
