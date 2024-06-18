@@ -21,7 +21,7 @@ Deactivate any existing python virtualenvs and run installers:
     . ~/.bash_profile
 
 youcompleteme will need to be compiled before it does anything
-https://github.com/Valloric/YouCompleteMe#mac-os-x
+https://github.com/ycm-core/YouCompleteMe#macos
 
 Optional Steps:
 - Load custom iTerm2 preferences:
