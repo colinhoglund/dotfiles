@@ -5,7 +5,6 @@
 python_version='3.12.4'
 
 global_python_pkgs='
-  awscli
   flake8
   jupyter
   pep8

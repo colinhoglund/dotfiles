@@ -1,3 +1,6 @@
+# use brew to get around https://github.com/aws/aws-cli/issues/7252
+brew "awscli"
+
 brew "bash-completion"
 brew "coreutils"
 brew "git"
