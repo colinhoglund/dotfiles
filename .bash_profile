@@ -1,7 +1,14 @@
 #!/bin/bash
 
+## env preferences ##
+export GOPATH=$HOME/go
+export PATH="$GOPATH/bin:/usr/local/sbin:$PATH:$HOME/bin:/usr/local/opt/go/libexec/bin"
+export EDITOR=vi
+export CLICOLOR=1
+export GREP_OPTIONS='--color=auto'
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
+## homebrew ##
 eval "$(/opt/homebrew/bin/brew shellenv)"
 brew_prefix="$(dirname "$(dirname "$(command -v brew)")")"
 
@@ -30,13 +37,6 @@ test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shel
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if command -v pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 if command -v pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
-## env preferences ##
-export GOPATH=$HOME/go
-export PATH="$GOPATH/bin:/usr/local/sbin:$PATH:$HOME/bin:/usr/local/opt/go/libexec/bin"
-export EDITOR=vi
-export CLICOLOR=1
-export GREP_OPTIONS='--color=auto'
 
 ## file handling aliases ##
 alias cp='cp -iv'
