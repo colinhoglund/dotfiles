@@ -23,4 +23,7 @@ Deactivate any existing python virtualenvs and run installers:
 Optional Steps:
 - Load custom iTerm2 preferences:
   - `cp com.googlecode.iterm2.plist ~/`
-  - Preferences -> General -> Settings -> Load preferences from a custom folder or URL -> enter `~/`
+  - Settings -> General -> Settings -> Load preferences from a custom folder or URL -> enter `~/`
+- Enable iterm2 status bar
+  - Settings -> Profiles -> Default -> Session -> Enable "Status bar enabled"
+  - Click "Configure Status Bar" to configure variables set in .bash_profile
