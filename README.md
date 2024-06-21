@@ -27,3 +27,5 @@ Optional Steps:
 - Enable iterm2 [status bar](https://iterm2.com/documentation-status-bar.html)
   - Settings -> Profiles -> Default -> Session -> Enable "Status bar enabled"
   - Click "Configure Status Bar" to configure variables set in .bash_profile
+  - Example configuration
+    ![](assets/statusbar.png)
