@@ -28,4 +28,5 @@ Optional Steps:
   - Settings -> Profiles -> Default -> Session -> Enable "Status bar enabled"
   - Click "Configure Status Bar" to configure variables set in .bash_profile
   - Example configuration
+
     ![](assets/statusbar.png)
