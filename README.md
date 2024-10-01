@@ -2,10 +2,6 @@ OS X dotfiles
 ========
 **Please note:** These dotfiles contain many tools specific to Python development
 
-Install Xcode command line tools:
-
-    xcode-select --install
-
 Clone repo into home directory:
 
     git clone https://github.com/colinhoglund/dotfiles.git
