@@ -1,3 +1,4 @@
+# Initialize zsh completion system
 autoload -Uz compinit
 compinit
 
