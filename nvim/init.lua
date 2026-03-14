@@ -44,6 +44,7 @@ vim.opt.splitright     = true
 
 -- Keymaps
 vim.keymap.set("n", "<leader>z", "za", { desc = "Toggle fold" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostics" })
 vim.keymap.set("n", "j",         "gj")
 vim.keymap.set("n", "k",         "gk")
 vim.keymap.set("n", "<C-H>",     "<C-W><C-H>")
@@ -216,7 +217,7 @@ require("lazy").setup({
 
   {
     "nvim-tree/nvim-tree.lua",
-    keys   = { { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" } },
+    keys   = { { "<leader>t", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file explorer" } },
     config = function()
       require("nvim-tree").setup()
     end,
