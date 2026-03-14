@@ -1,13 +1,10 @@
-OS X dotfiles
+dotfiles
 ========
 
-Clone repo into home directory:
+```zsh
+git clone https://github.com/colinhoglund/dotfiles.git
+cd dotfiles
+make all
+```
 
-    git clone https://github.com/colinhoglund/dotfiles.git
-    cd dotfiles
-
-Deactivate any existing python virtualenvs and run installers:
-
-    dotfiles -c config.yaml
-    make brew
-    make all
+> Requires Go to build the dotfiles binary. All other dependencies are installed by `make all`.

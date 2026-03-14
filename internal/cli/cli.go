@@ -5,10 +5,12 @@ import (
 	"archive/zip"
 	"compress/gzip"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -17,6 +19,18 @@ import (
 
 func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 	for _, f := range rFiles {
+		if isInstalled(f) {
+			log.Println("already installed, skipping:", f.URL)
+			continue
+		}
+
+		if f.AppName != "" {
+			if err := getDmgApp(f.URL, f.AppName); err != nil {
+				log.Fatal(err)
+			}
+			continue
+		}
+
 		dest, err := f.ExpandDestination()
 		if err != nil {
 			return err
@@ -26,18 +40,36 @@ func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 			return err
 		}
 
-		if _, err := os.Stat(dest); err == nil {
-			log.Println("file already exists:", dest)
-
-			continue
-		}
-
 		if err := getBinary(f.URL, f.ArchiveSource, dest); err != nil {
 			log.Fatal(err)
 		}
 	}
 
 	return nil
+}
+
+func isInstalled(f config.RemoteFile) bool {
+	if f.CheckPath != "" {
+		if _, err := exec.LookPath(f.CheckPath); err == nil {
+			return true
+		}
+		if _, err := os.Stat(f.CheckPath); err == nil {
+			return true
+		}
+	}
+	if f.AppName != "" {
+		_, err := os.Stat("/Applications/" + f.AppName)
+		return err == nil
+	}
+	if f.Destination != "" {
+		dest, err := f.ExpandDestination()
+		if err != nil {
+			return false
+		}
+		_, err = os.Stat(dest)
+		return err == nil
+	}
+	return false
 }
 
 func getBinary(url, archivedFilename, filename string) error {
@@ -68,12 +100,6 @@ func getBinary(url, archivedFilename, filename string) error {
 		if err := getPkg(resp.Body); err != nil {
 			return err
 		}
-	case strings.HasSuffix(url, ".dmg"):
-		// TODO:
-		// hdiutil attach -nobrowse /tmp/googlechrome.dmg
-		// sudo cp -r /Volumes/Google\ Chrome/Google\ Chrome.app /Applications/
-		// umount /Volumes/Google\ Chrome/
-		// rm -f /tmp/googlechrome.dmg
 	default:
 		if err := copyFileIfNotExists(resp.Body, filename, 0755); err != nil {
 			return err
@@ -81,6 +107,53 @@ func getBinary(url, archivedFilename, filename string) error {
 	}
 
 	return nil
+}
+
+func getDmgApp(url, appName string) error {
+	log.Println("downloading:", url)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	tmpFile, err := os.CreateTemp("", "dotfiles-*.dmg")
+	if err != nil {
+		return err
+	}
+	tmpPath := tmpFile.Name()
+	defer os.Remove(tmpPath)
+
+	if _, err := io.Copy(tmpFile, resp.Body); err != nil {
+		return err
+	}
+	tmpFile.Close()
+
+	mountpoint, err := os.MkdirTemp("", "dotfiles-mount-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(mountpoint)
+
+	log.Println("mounting dmg")
+	if err := execCmd("hdiutil", "attach", "-nobrowse", "-mountpoint", mountpoint, tmpPath).Run(); err != nil {
+		return err
+	}
+	defer execCmd("hdiutil", "detach", mountpoint).Run()
+
+	// Look for the .app directly in the mountpoint, then one level deep
+	appPath := filepath.Join(mountpoint, appName)
+	if _, err := os.Stat(appPath); err != nil {
+		matches, globErr := filepath.Glob(filepath.Join(mountpoint, "*", appName))
+		if globErr != nil || len(matches) == 0 {
+			return fmt.Errorf("could not find %s in mounted DMG", appName)
+		}
+		appPath = matches[0]
+	}
+
+	log.Println("installing:", "/Applications/"+appName)
+	return execCmd("sudo", "ditto", appPath, "/Applications/"+appName).Run()
 }
 
 func getTar(reader io.Reader, archivedFilename, filename string) error {

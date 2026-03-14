@@ -23,7 +23,11 @@ func New() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&r.configFile, "config-file", "c", "", "JSON/YAML configuration file")
+	cmd.PersistentFlags().StringVarP(&r.configFile, "config-file", "c", "", "JSON/YAML configuration file")
+
+	cmd.AddCommand(newLinkCmd(&r.configFile))
+	cmd.AddCommand(newUnlinkCmd(&r.configFile))
+	cmd.AddCommand(newGitCmd())
 
 	return cmd
 }
