@@ -6,7 +6,7 @@ eval "$(starship init zsh)"
 
 ## env preferences ##
 export GOPATH=$HOME/go
-export PATH="$GOPATH/bin:/usr/local/sbin:$PATH:$HOME/bin:/usr/local/opt/go/libexec/bin"
+export PATH="$GOPATH/bin:/usr/local/sbin:$HOME/.local/bin:$PATH:$HOME/bin:/usr/local/opt/go/libexec/bin"
 export EDITOR=vi
 export GREP_OPTIONS='--color=auto'
 
