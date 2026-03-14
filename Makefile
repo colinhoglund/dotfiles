@@ -1,5 +1,5 @@
 .PHONY: all
-all: shellcheck link git vim iterm chrome godeps
+all: shellcheck link git vim chrome godeps
 
 .PHONY: help
 help:

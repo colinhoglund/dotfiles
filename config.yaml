@@ -1,20 +1,5 @@
 ---
 remoteFiles:
-  - url: https://github.com/Homebrew/brew/releases/download/4.3.6/Homebrew-4.3.6.pkg
-    destination: /opt/homebrew/bin/brew
-  - url: https://dl.k8s.io/release/v1.30.2/bin/darwin/arm64/kubectl
-    destination: ~/bin/kubectl
-  - url: https://get.helm.sh/helm-v3.15.2-darwin-arm64.tar.gz
-    destination: ~/bin/helm
-    archiveSource: darwin-arm64/helm
-  - url: https://github.com/harness/drone-cli/releases/latest/download/drone_darwin_arm64.tar.gz
-    destination: ~/bin/drone
-    archiveSource: drone
-  - url: https://github.com/containers/podman/releases/download/v5.1.2/podman-installer-macos-universal.pkg
-    destination: /opt/podman/bin/podman
-  - url: https://github.com/golangci/golangci-lint/releases/download/v1.60.1/golangci-lint-1.60.1-darwin-arm64.tar.gz
-    destination: ~/bin/golangci-lint
-    archiveSource: golangci-lint-1.60.1-darwin-arm64/golangci-lint
-  - url: https://github.com/cli/cli/releases/download/v2.57.0/gh_2.57.0_macOS_arm64.zip
-    destination: ~/bin/gh
-    archiveSource: gh_2.57.0_macOS_arm64/bin/gh
+  - url: https://github.com/Homebrew/brew/releases/latest/download/Homebrew.pkg
+  - url: https://github.com/containers/podman/releases/download/v5.8.1/podman-installer-macos-universal.pkg
+  - url: https://release.files.ghostty.org/1.3.1/Ghostty.dmg

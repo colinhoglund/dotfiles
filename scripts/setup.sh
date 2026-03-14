@@ -1,10 +1,6 @@
 #!/bin/bash
 
 links='
-  .bash_profile
-  .bash_prompt
-  .ipython
-  .hammerspoon
   .vimrc
   .zshrc
 '
@@ -81,22 +77,6 @@ unlink() {
   done
 }
 
-iterm() {
-  if [ -d /Applications/iTerm.app/ ]; then
-    warn_installed iTerm
-  else
-    iterm_url=$(curl -s https://iterm2.com/downloads.html\
-                | grep -o 'https://iterm2.com/downloads/stable/.*zip'\
-                | head -1)
-    iterm_zipfile=$(basename "$iterm_url")
-
-    cd /tmp || exit 1
-    wget "$iterm_url"
-    unzip -qd /Applications/ "$iterm_zipfile"
-    rm -f "$iterm_zipfile"
-  fi
-}
-
 chrome() {
   if [ -d /Applications/Google\ Chrome.app/ ]; then
     warn_installed 'Google Chrome'
@@ -129,7 +109,7 @@ warn_installed() {
 }
 
 usage() {
-    echo "Usage: $0 <link|unlink|git|vim|iterm|chrome|slack>"
+    echo "Usage: $0 <link|unlink|git|vim|chrome|slack>"
 }
 
 main() {
@@ -139,7 +119,6 @@ main() {
     chrome) chrome;;
     slack) slack;;
     git) git_config;;
-    iterm) iterm;;
     link) link;;
     unlink) unlink;;
     vim) vim_config;;
