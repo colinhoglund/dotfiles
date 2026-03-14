@@ -2,7 +2,7 @@
 shell-integration = zsh
 
 # Theme — run `ghostty +list-themes` to browse options
-theme = catppuccin-mocha
+theme = "Catppuccin Mocha"
 
 # Font (Ghostty ships with Nerd Font glyphs built-in, no separate install needed)
 # font-family = JetBrainsMono Nerd Font
