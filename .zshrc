@@ -1,3 +1,6 @@
+autoload -Uz compinit
+compinit
+
 eval "$(/usr/local/bin/brew shellenv)"
 eval "$(starship init zsh)"
 
