@@ -3,8 +3,8 @@ package config
 import (
 	"os"
 	"path/filepath"
+	"strings"
 
-	homedir "github.com/mitchellh/go-homedir"
 	"sigs.k8s.io/yaml"
 )
 
@@ -57,9 +57,20 @@ func (c *Config) Dir() string {
 }
 
 func (r RemoteFile) ExpandDestination() (string, error) {
-	return homedir.Expand(r.Destination)
+	return expandTilde(r.Destination)
 }
 
 func (l Link) ExpandDestination() (string, error) {
-	return homedir.Expand(l.Destination)
+	return expandTilde(l.Destination)
+}
+
+func expandTilde(path string) (string, error) {
+	if path != "~" && !strings.HasPrefix(path, "~/") {
+		return path, nil
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(home, path[2:]), nil
 }

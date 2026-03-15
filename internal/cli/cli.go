@@ -4,7 +4,6 @@ import (
 	"archive/tar"
 	"archive/zip"
 	"compress/gzip"
-	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -17,7 +16,7 @@ import (
 	"github.com/colinhoglund/dotfiles/internal/config"
 )
 
-func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
+func installRemoteFiles(rFiles ...config.RemoteFile) error {
 	for _, f := range rFiles {
 		if isInstalled(f) {
 			log.Println("already installed, skipping:", f.URL)
@@ -26,7 +25,7 @@ func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 
 		if f.AppName != "" {
 			if err := getDmgApp(f.URL, f.AppName); err != nil {
-				log.Fatal(err)
+				return err
 			}
 			continue
 		}
@@ -41,7 +40,7 @@ func InstallRemoteFiles(rFiles ...config.RemoteFile) error {
 		}
 
 		if err := getBinary(f.URL, f.ArchiveSource, dest); err != nil {
-			log.Fatal(err)
+			return err
 		}
 	}
 
@@ -84,29 +83,16 @@ func getBinary(url, archivedFilename, filename string) error {
 	switch {
 	case strings.HasSuffix(url, ".zip"):
 		log.Println("unpacking zip archive:", url)
-
-		if err := getZip(resp.Body, archivedFilename, filename); err != nil {
-			return err
-		}
+		return getZip(resp.Body, archivedFilename, filename)
 	case strings.HasSuffix(url, ".tar.gz"):
 		log.Println("unpacking tar.gz archive:", url)
-
-		if err := getTar(resp.Body, archivedFilename, filename); err != nil {
-			return err
-		}
+		return getTar(resp.Body, archivedFilename, filename)
 	case strings.HasSuffix(url, ".pkg"):
 		log.Println("installing pkg:", url)
-
-		if err := getPkg(resp.Body); err != nil {
-			return err
-		}
+		return getPkg(resp.Body)
 	default:
-		if err := copyFileIfNotExists(resp.Body, filename, 0755); err != nil {
-			return err
-		}
+		return copyFileIfNotExists(resp.Body, filename, 0755)
 	}
-
-	return nil
 }
 
 func getDmgApp(url, appName string) error {
@@ -167,6 +153,7 @@ func getTar(reader io.Reader, archivedFilename, filename string) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
 	gzReader, err := gzip.NewReader(f)
 	if err != nil {
@@ -184,15 +171,11 @@ func getTar(reader io.Reader, archivedFilename, filename string) error {
 		}
 
 		if header.Name == archivedFilename {
-			if err := copyFileIfNotExists(tarReader, filename, 0755); err != nil {
-				return err
-			}
-
-			break
+			return copyFileIfNotExists(tarReader, filename, 0755)
 		}
 	}
 
-	return nil
+	return fmt.Errorf("file %q not found in archive", archivedFilename)
 }
 
 func getZip(reader io.Reader, archivedFilename, filename string) error {
@@ -206,29 +189,20 @@ func getZip(reader io.Reader, archivedFilename, filename string) error {
 	if err != nil {
 		return err
 	}
+	defer zipreader.Close()
 
-	var zipfile *zip.File
 	for _, f := range zipreader.File {
 		if f.Name == archivedFilename {
-			zipfile = f
-			break
+			rc, err := f.Open()
+			if err != nil {
+				return err
+			}
+			defer rc.Close()
+			return copyFileIfNotExists(rc, filename, 0755)
 		}
 	}
 
-	if zipfile == nil {
-		return errors.New("file did not exist in archive")
-	}
-
-	zipfileReadCloser, err := zipfile.Open()
-	if err != nil {
-		return err
-	}
-
-	if err := copyFileIfNotExists(zipfileReadCloser, filename, 0755); err != nil {
-		return err
-	}
-
-	return nil
+	return fmt.Errorf("file %q not found in archive", archivedFilename)
 }
 
 func getPkg(reader io.Reader) error {
@@ -236,14 +210,13 @@ func getPkg(reader io.Reader) error {
 	if err != nil {
 		return err
 	}
-	defer os.Remove(tempfile)
 
 	pkgName := tempfile + ".pkg"
-
-	// file must have a .pkg file extension
 	if err := os.Rename(tempfile, pkgName); err != nil {
+		os.Remove(tempfile)
 		return err
 	}
+	defer os.Remove(pkgName)
 
 	return execCmd("sudo", "installer", "-pkg", pkgName, "-target", "/").Run()
 }
@@ -255,12 +228,10 @@ func copyFileIfNotExists(reader io.Reader, filename string, mode os.FileMode) er
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
-	if _, err = io.Copy(file, reader); err != nil {
-		return err
-	}
-
-	return nil
+	_, err = io.Copy(file, reader)
+	return err
 }
 
 func copyToTempFile(reader io.Reader) (string, error) {

@@ -3,7 +3,6 @@ module github.com/colinhoglund/dotfiles
 go 1.26
 
 require (
-	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.10.2
 	sigs.k8s.io/yaml v1.6.0
 )

@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,10 +14,7 @@ func newLinkCmd(configFile *string) *cobra.Command {
 		Use:   "link",
 		Short: "Create symlinks for dotfiles",
 		RunE: func(_ *cobra.Command, _ []string) error {
-			if *configFile == "" {
-				return fmt.Errorf("config file required: use -c flag")
-			}
-			conf, err := config.New(*configFile)
+			conf, err := loadConfig(*configFile)
 			if err != nil {
 				return err
 			}
@@ -32,10 +28,7 @@ func newUnlinkCmd(configFile *string) *cobra.Command {
 		Use:   "unlink",
 		Short: "Remove dotfile symlinks",
 		RunE: func(_ *cobra.Command, _ []string) error {
-			if *configFile == "" {
-				return fmt.Errorf("config file required: use -c flag")
-			}
-			conf, err := config.New(*configFile)
+			conf, err := loadConfig(*configFile)
 			if err != nil {
 				return err
 			}
@@ -61,12 +54,16 @@ func linkDotfiles(conf *config.Config) error {
 		if info, err := os.Lstat(dest); err == nil {
 			if info.Mode()&os.ModeSymlink != 0 {
 				// Already a symlink — remove and re-create
-				os.Remove(dest)
+				if err := os.Remove(dest); err != nil {
+					return err
+				}
 			} else {
 				// Real file or directory — back it up
 				bak := dest + ".bak"
 				log.Printf("backing up %s to %s", dest, bak)
-				os.RemoveAll(bak)
+				if err := os.RemoveAll(bak); err != nil {
+					log.Printf("warning: could not remove old backup %s: %v", bak, err)
+				}
 				if err := os.Rename(dest, bak); err != nil {
 					return err
 				}
@@ -96,7 +93,9 @@ func unlinkDotfiles(conf *config.Config) error {
 
 		if info.Mode()&os.ModeSymlink != 0 {
 			log.Printf("removing symlink: %s", dest)
-			os.Remove(dest)
+			if err := os.Remove(dest); err != nil {
+				return err
+			}
 		} else {
 			log.Printf("skipping %s: not a symlink", dest)
 		}
