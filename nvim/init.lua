@@ -47,6 +47,7 @@ vim.keymap.set("n", "<leader>z", "za", { desc = "Toggle fold" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostics" })
 vim.keymap.set("n", "j",         "gj")
 vim.keymap.set("n", "k",         "gk")
+-- Navigate between splits with Ctrl+H/J/K/L instead of Ctrl+W+Ctrl+H/J/K/L
 vim.keymap.set("n", "<C-H>",     "<C-W><C-H>")
 vim.keymap.set("n", "<C-J>",     "<C-W><C-J>")
 vim.keymap.set("n", "<C-K>",     "<C-W><C-K>")
@@ -61,6 +62,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- Treat Starlark files (used in Bazel) as Python for syntax highlighting and LSP
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern  = "*.star",
   callback = function(ev) vim.bo[ev.buf].filetype = "python" end,
