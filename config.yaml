@@ -12,11 +12,11 @@ remoteFiles:
     appName: Slack.app
 
 links:
-  - source: .zshrc
+  - source: config/.zshrc
     destination: ~/.zshrc
-  - source: nvim
+  - source: config/nvim
     destination: ~/.config/nvim
-  - source: ghostty
+  - source: config/ghostty
     destination: ~/.config/ghostty
-  - source: starship.toml
+  - source: config/starship.toml
     destination: ~/.config/starship.toml

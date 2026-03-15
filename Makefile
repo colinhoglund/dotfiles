@@ -11,7 +11,7 @@ install: build
 
 .PHONY: brew
 brew:
-	brew bundle
+	brew bundle --file config/Brewfile
 
 .PHONY: link
 link: build
