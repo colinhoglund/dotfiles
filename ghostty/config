@@ -1,0 +1,16 @@
+# Shell integration
+shell-integration = zsh
+
+# Theme — run `ghostty +list-themes` to browse options
+theme = "Catppuccin Mocha"
+
+# Font (Ghostty ships with Nerd Font glyphs built-in, no separate install needed)
+# font-family = JetBrainsMono Nerd Font
+font-size = 14
+
+# Window
+window-padding-x = 8
+window-padding-y = 8
+
+# Scrollback
+scrollback-limit = 10000

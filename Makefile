@@ -1,22 +1,32 @@
 .PHONY: all
-all: shellcheck link git vim iterm chrome godeps
+all: build install brew link git godeps pydeps
 
-.PHONY: help
-help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+.PHONY: build
+build:
+	go build -o dotfiles ./cmd/dotfiles
+
+.PHONY: install
+install: build
+	./dotfiles -c config.yaml
 
 .PHONY: brew
-brew: ## Install brew packages
+brew:
 	brew bundle
 
-.PHONY: shellcheck
-shellcheck: ## Linter for all shell scripts
-	shellcheck .bash_profile .bash_prompt ./scripts/setup.sh
+.PHONY: link
+link: build
+	./dotfiles -c config.yaml link
+
+.PHONY: git
+git: build
+	./dotfiles -c config.yaml git
 
 .PHONY: godeps
 godeps:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install golang.org/x/tools/gopls@latest
 
-%:
-	./scripts/setup.sh $(@)
+.PHONY: pydeps
+pydeps:
+	uv python install
+	uv tool install ruff

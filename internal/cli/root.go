@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -23,13 +24,17 @@ func New() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&r.configFile, "config-file", "c", "", "JSON/YAML configuration file")
+	cmd.PersistentFlags().StringVarP(&r.configFile, "config-file", "c", "", "JSON/YAML configuration file")
+
+	cmd.AddCommand(newLinkCmd(&r.configFile))
+	cmd.AddCommand(newUnlinkCmd(&r.configFile))
+	cmd.AddCommand(newGitCmd())
 
 	return cmd
 }
 
 func (r *root) run() error {
-	conf, err := config.New(r.configFile)
+	conf, err := loadConfig(r.configFile)
 	if err != nil {
 		return err
 	}
@@ -40,7 +45,7 @@ func (r *root) run() error {
 
 	log.Println("installing remote files")
 
-	if err := InstallRemoteFiles(conf.RemoteFiles...); err != nil {
+	if err := installRemoteFiles(conf.RemoteFiles...); err != nil {
 		return err
 	}
 
@@ -49,13 +54,18 @@ func (r *root) run() error {
 	return nil
 }
 
+func loadConfig(configFile string) (*config.Config, error) {
+	if configFile == "" {
+		return nil, fmt.Errorf("config file required: use -c flag")
+	}
+	return config.New(configFile)
+}
+
 func xcodeInstall() error {
 	// xcode-select -p errors with exit code 2 when command line tools are not installed
 	err := exec.Command("xcode-select", "-p").Run()
 	if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 2 {
-		if err := execCmd("xcode-select", "--install").Run(); err != nil {
-			return err
-		}
+		return execCmd("xcode-select", "--install").Run()
 	}
 	return err
 }
