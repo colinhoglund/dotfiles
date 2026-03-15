@@ -46,6 +46,7 @@ alias tkill='tmux kill-session'
 alias tlist='tmux list-sessions'
 alias gocov='go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out'
 alias goclean='go clean -cache -testcache -modcache -fuzzcache'
+alias venv='source .venv/bin/activate'
 
 # Machine-local overrides (not tracked in repo)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local

@@ -1,0 +1,19 @@
+# Starship configuration
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+[aws]
+symbol = "☁️ "
+style = "bold fg:#FF9900"
+format = 'on [$symbol$profile]($style) '
+
+[kubernetes]
+symbol = "⛵ "
+style = "bold blue"
+format = 'on [$symbol$context( \($namespace\))]($style) '
+disabled = false
+
+[python]
+symbol = "🐍 "
+style = "bold green"
+format = 'via [$symbol$virtualenv]($style) '

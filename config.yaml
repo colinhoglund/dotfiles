@@ -18,3 +18,5 @@ links:
     destination: ~/.config/nvim
   - source: ghostty
     destination: ~/.config/ghostty
+  - source: starship.toml
+    destination: ~/.config/starship.toml
