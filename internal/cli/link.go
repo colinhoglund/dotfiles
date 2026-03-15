@@ -41,7 +41,7 @@ func linkDotfiles(conf *config.Config) error {
 	for _, l := range conf.Links {
 		src := filepath.Join(conf.Dir(), l.Source)
 
-		dest, err := l.ExpandDestination()
+		dest, err := config.ExpandTilde(l.Destination)
 		if err != nil {
 			return err
 		}
@@ -81,7 +81,7 @@ func linkDotfiles(conf *config.Config) error {
 
 func unlinkDotfiles(conf *config.Config) error {
 	for _, l := range conf.Links {
-		dest, err := l.ExpandDestination()
+		dest, err := config.ExpandTilde(l.Destination)
 		if err != nil {
 			return err
 		}

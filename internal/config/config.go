@@ -56,15 +56,7 @@ func (c *Config) Dir() string {
 	return c.dir
 }
 
-func (r RemoteFile) ExpandDestination() (string, error) {
-	return expandTilde(r.Destination)
-}
-
-func (l Link) ExpandDestination() (string, error) {
-	return expandTilde(l.Destination)
-}
-
-func expandTilde(path string) (string, error) {
+func ExpandTilde(path string) (string, error) {
 	if path != "~" && !strings.HasPrefix(path, "~/") {
 		return path, nil
 	}

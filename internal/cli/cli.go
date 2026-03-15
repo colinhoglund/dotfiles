@@ -22,29 +22,46 @@ func installRemoteFiles(rFiles ...config.RemoteFile) error {
 			log.Println("already installed, skipping:", f.URL)
 			continue
 		}
-
-		if f.AppName != "" {
-			if err := getDmgApp(f.URL, f.AppName); err != nil {
-				return err
-			}
-			continue
-		}
-
-		dest, err := f.ExpandDestination()
-		if err != nil {
-			return err
-		}
-
-		if err := os.MkdirAll(filepath.Dir(dest), 0750); err != nil {
-			return err
-		}
-
-		if err := getBinary(f.URL, f.ArchiveSource, dest); err != nil {
+		if err := installRemoteFile(f); err != nil {
 			return err
 		}
 	}
-
 	return nil
+}
+
+func installRemoteFile(f config.RemoteFile) error {
+	body, err := httpGet(f.URL)
+	if err != nil {
+		return err
+	}
+	defer body.Close()
+
+	if f.AppName != "" {
+		return installDmgApp(body, f.AppName)
+	}
+
+	dest, err := config.ExpandTilde(f.Destination)
+	if err != nil {
+		return err
+	}
+
+	if err := os.MkdirAll(filepath.Dir(dest), 0750); err != nil {
+		return err
+	}
+
+	switch {
+	case strings.HasSuffix(f.URL, ".zip"):
+		log.Println("unpacking zip archive:", f.URL)
+		return getZip(body, f.ArchiveSource, dest)
+	case strings.HasSuffix(f.URL, ".tar.gz"):
+		log.Println("unpacking tar.gz archive:", f.URL)
+		return getTar(body, f.ArchiveSource, dest)
+	case strings.HasSuffix(f.URL, ".pkg"):
+		log.Println("installing pkg:", f.URL)
+		return getPkg(body)
+	default:
+		return copyFileIfNotExists(body, dest, 0755)
+	}
 }
 
 func isInstalled(f config.RemoteFile) bool {
@@ -61,7 +78,7 @@ func isInstalled(f config.RemoteFile) bool {
 		return err == nil
 	}
 	if f.Destination != "" {
-		dest, err := f.ExpandDestination()
+		dest, err := config.ExpandTilde(f.Destination)
 		if err != nil {
 			return false
 		}
@@ -71,39 +88,16 @@ func isInstalled(f config.RemoteFile) bool {
 	return false
 }
 
-func getBinary(url, archivedFilename, filename string) error {
+func httpGet(url string) (io.ReadCloser, error) {
 	log.Println("downloading:", url)
-
 	resp, err := http.Get(url)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	defer resp.Body.Close()
-
-	switch {
-	case strings.HasSuffix(url, ".zip"):
-		log.Println("unpacking zip archive:", url)
-		return getZip(resp.Body, archivedFilename, filename)
-	case strings.HasSuffix(url, ".tar.gz"):
-		log.Println("unpacking tar.gz archive:", url)
-		return getTar(resp.Body, archivedFilename, filename)
-	case strings.HasSuffix(url, ".pkg"):
-		log.Println("installing pkg:", url)
-		return getPkg(resp.Body)
-	default:
-		return copyFileIfNotExists(resp.Body, filename, 0755)
-	}
+	return resp.Body, nil
 }
 
-func getDmgApp(url, appName string) error {
-	log.Println("downloading:", url)
-
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
+func installDmgApp(reader io.Reader, appName string) error {
 	tmpFile, err := os.CreateTemp("", "dotfiles-*.dmg")
 	if err != nil {
 		return err
@@ -111,7 +105,7 @@ func getDmgApp(url, appName string) error {
 	tmpPath := tmpFile.Name()
 	defer os.Remove(tmpPath)
 
-	if _, err := io.Copy(tmpFile, resp.Body); err != nil {
+	if _, err := io.Copy(tmpFile, reader); err != nil {
 		return err
 	}
 	tmpFile.Close()
