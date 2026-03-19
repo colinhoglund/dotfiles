@@ -44,9 +44,19 @@ alias sed='gsed'
 alias dd='gdd'
 alias tkill='tmux kill-session'
 alias tlist='tmux list-sessions'
-alias gocov='go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out'
+alias gocovhtml='go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out'
 alias goclean='go clean -cache -testcache -modcache -fuzzcache'
 alias venv='source .venv/bin/activate'
+
+gocov() {
+  # If no args are provided, default to "./..."
+  if [ "$#" -eq 0 ]; then
+    set -- ./...
+  fi
+
+  go test -coverprofile=coverage.out "$@" > /dev/null 2>&1
+  go tool cover -func <(cat coverage.out | grep -v -i generated) | grep total | awk '{print $1, $3}'
+}
 
 # Machine-local overrides (not tracked in repo)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
