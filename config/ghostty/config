@@ -12,7 +12,4 @@ font-size = 16
 window-padding-x = 8
 window-padding-y = 8
 
-# Scrollback
-scrollback-limit = 10000
-
 copy-on-select = clipboard
