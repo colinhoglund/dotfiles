@@ -1,6 +1,6 @@
 # Initialize zsh completion system
-autoload -Uz compinit
-compinit
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
 # Homebrew (auto-detect Apple Silicon vs Intel)
 [[ -f /opt/homebrew/bin/brew ]] \
@@ -57,6 +57,8 @@ gocov() {
   go test -coverprofile=coverage.out "$@" > /dev/null 2>&1
   go tool cover -func <(cat coverage.out | grep -v -i generated) | grep total | awk '{print $1, $3}'
 }
+
+uv-activate() { source "${1:-.}/.venv/bin/activate" }
 
 # Machine-local overrides (not tracked in repo)
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
